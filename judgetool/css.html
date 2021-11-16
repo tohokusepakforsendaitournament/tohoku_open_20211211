@@ -1,0 +1,962 @@
+<style>
+
+/* 全体 */
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;  
+}
+
+// メディアクエリ　https://allabout.co.jp/gm/gc/396404/
+@media (max-width: 350px) {
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;  
+    font-size: 16.5px;
+    font-size: 40%;
+  }
+}
+@media (max-width: 380.9px) {
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;  
+    font-size: 16.5px;
+    font-size: 45%;
+  }
+}
+@media (min-width: 381px) {
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 16.5px; 
+    font-size: 50%;
+  }
+}
+@media (min-width: 481px) {
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 16.5px;
+    font-size: 62.5%; // rem算出をしやすくするために10px
+  }
+}
+@media (min-width: 601px) {
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;  
+    font-size: 62.5%; // rem算出をしやすくするために10px
+  }
+  body {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* .basic {
+  font-size: 1.6rem;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+} */
+
+/* ボディ */
+body {
+  width: 100%;
+}
+
+/* ページ */
+
+div.page {
+    overflow: hidden;
+    display: none;
+}
+
+/* オーバーレイ *////////////////////////////////////////////////////////////////////////////////////////////
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+}
+/* 終わり。オーバーレイ *///////////////////////////////////////////////////////////////////////////////////////
+
+/* モーダルウィンドウ *////////////////////////////////////////////////////////////////////////////////////////
+.modal-window {
+  font-size: 16.5px;
+  font-weight: 700;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background-color: #dfdddd;
+  border-radius: 5px;
+  z-index: 11;
+  padding: 2rem;
+}
+.help {
+  font-size: 12px;
+  font-weight: 600;
+}
+p.topFont {
+  font-size: 16.5px;
+  font-weight: 700;
+  text-align: center;
+}
+.button-close,
+.buttonInterrupt,
+.buttonHelp {
+  font-weight: 700;
+  position: absolute;
+  width: 99px;
+  height: 51px;
+  text-align: center;
+  vertical-align: middle;
+  transform: translate(-50%, -50%);
+  color: #eaeaea;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button-close {
+  font-size: 13px;
+  top: 61.6%;
+  left: 24%;
+  background-color: #c96931;
+}
+.buttonInterrupt {
+  font-size: 16.5px;
+  top: 61.6%;
+  left: 76%;
+  background-color: #c94031;
+}
+.buttonHelp {
+  font-size: 16.5px;
+  top: 88%;
+  left: 50%;
+  background-color: #c96931;
+}
+#settingLeftReg,
+#settingRightReg {  
+  font-size: 24px;
+  position: absolute;
+  width: 96px;
+  height: 36px;
+  text-align: center;
+  vertical-align: middle;
+  transform: translate(-50%, -50%);
+  top: 22%;
+}
+#settingLeftReg {left: 20%;}
+#settingRightReg {left: 80%;}
+.smallPx {
+  font-size: 12px;
+}
+#settingCourtLeft,
+#settingCourtRight {
+  font-size: 20px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  vertical-align: middle;
+  transform: translate(-50%, -50%);
+  top: 45%;
+}
+#settingCourtLeft {left: 15%;}
+#settingCourtRight {left: 85%;}
+#settingChangeCourt {
+  font-size: 20px;
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  padding: 5px;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  top: 45%;
+  left: 50%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #9c9c9c;
+  color: #ffcc33;
+  cursor: pointer;
+}
+#settingServeLeft,
+#settingServeRight {
+  font-size: 20px;
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  transform: translate(-50%, -50%);
+  top: 65%;
+}
+#settingServeLeft {left: 15%;}
+#settingServeRight {left: 85%;}
+#settingChangeServe {
+  font-size: 20px;
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  padding: 5px;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  top: 65%;
+  left: 50%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #9c9c9c;
+  color: #ffcc33;
+  cursor: pointer;
+}
+#playerLeftReg,
+#playerRightReg {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+#playerLeft,
+#playerRight {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 16px;
+}
+/* 終わり。モーダルウィンドウ *////////////////////////////////////////////////////////////////////////////////////////
+
+
+/* スプラッシュスクリーン *///////////////////////////////////////////////////////////////////////////////////
+div.splashBg {
+  width: 100%;
+  height: 100vh;
+  background-color: #FFF766;
+  color: #666EFF;
+}
+div#pageSplash > div > p {
+  font-size: 24px;
+  font-weight: 900;
+  position: absolute;
+  top: 30%;
+  left: calc((100% - 336px)/2);
+  text-align: center;
+}
+div#pageSplash > div > p > br {
+  display: block;
+  content: "";
+  height: 4px;
+}
+/* 終わり。スプラッシュスクリーン *///////////////////////////////////////////////////////////////////////////////////
+
+
+/* スタート画面 & ゲーム終了画面 */////////////////////////////////////////////////////////////////////////////
+div#pageTop,
+div#pageEnd
+{
+  font-size: 24px;
+  font-weight: 550;
+  background-color: #FFFCCC;
+  color: #666329;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  vertical-align: middle;
+}
+div#pageTop div#container,
+div#pageEnd div#container
+{
+  margin: 2rem auto;
+}
+div#title {
+  background-color: #FFF766;
+  margin-bottom: 24px;
+}
+div#pageTop div#gameNumber,
+div#pageTop div#gamePass {
+  width: 100%;  
+  height: 24px;
+  position: relative;
+  margin: 4px;
+}
+div#pageTop div#gameNumber label,
+div#pageTop div#gamePass label {
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 51%;
+}
+div#pageTop div#gameNumber label {
+  letter-spacing: 4px;
+}
+div#pageTop div#gameNumber input#gameNumberInput,
+div#pageTop div#gamePass input#gamePassInput {
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: 51%;
+  width: 160px;
+  height: 24px;
+  border-radius: 2px;
+  border: 2px solid #ccc;
+}
+div#pageTop div#nextButton button,
+div#pageEnd button#backResult,
+div#pageEnd button#toTop {
+  margin: 6px;
+  border-radius: 2px;
+  border: 2px solid #ccc;
+  color: #666329;
+  background: #f1e767;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+  background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
+  background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  -webkit-box-shadow: inset 1px 1px 1px #fff;
+  box-shadow: inset 1px 1px 1px #fff;
+}
+div#pageTop div#nextButton button {
+  font-size: 24px;
+  font-weight: 550;
+  width: 100px;
+}
+div#pageEnd button#backResult {
+  font-size: 16px;
+  font-weight: 550;
+  width: 200px;
+}
+div#pageEnd button#toTop {
+  font-size: 16px;
+  font-weight: 550;
+  width: 80px;
+}
+div#pageTop div#nextButton button:hover,
+div#pageEnd button#backResult:hover,
+div#pageEnd button#toTop:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+  background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
+  background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+}
+div#pageTop div#alert {
+  font-size: 16px;
+}
+.copyright {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 200px;
+}
+/* 終わり。スタート画面 & ゲーム終了画面 */////////////////////////////////////////////////////////////////////////////
+
+
+/* 審判画面 *///////////////////////////////////////////////////////////////////////////////////////////////
+div#pageMain {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #292929;// rgb(41,41,41);
+}
+
+div#pageMain header {
+  width: 100%;
+  padding: 0 2rem;
+  height: 6rem;
+  position: relative;
+}
+// バッテンhttps://qiita.com/7note/items/28ce134d6b0c27d7c332
+div#pageMain header div#interrupt {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: #4D4D4D;
+  width: 4rem; // 線の長さ
+  cursor: pointer;
+  position: absolute;
+  top: 1.3rem;
+  left: 4%;
+}
+div#pageMain header div#interrupt::before,
+div#pageMain header div#interrupt::after {
+  content: "";      // 疑似要素に必須
+  width: 100%;      // 幅いっぱいを指定
+  height: 0.6rem;      // 適度な太さを指定
+  display: inline-block; // 高さをもたせる
+  background: #FFFAFA; // 線の色を指定
+  border-radius: 0.4rem;    // 線の端を丸くしたいなら指定する
+  position: absolute;
+  top: 1.3rem;
+  left: 4%;
+}
+div#pageMain header div#interrupt::before {
+  transform: rotate(45deg); // 時計回りに45度回転させる
+}
+div#pageMain header div#interrupt::after {
+  transform: rotate(-45deg); // 反時計回りに45度回転させる
+}
+div#pageMain header div#gameInfo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  /* color: #fff100; */
+  color: white;
+  width: 28rem;
+  height: 6rem;
+  padding: 0.5rem 0;
+  margin: 0 auto;
+  text-align: center;
+  vertical-align: middle;
+  letter-spacing: 0.1em;
+}
+.spanBS {margin: 0 0.15rem;}
+.spanBM {margin: 0 0.3rem;}
+div#pageMain header div#help {
+  position: absolute;
+  top: 1.5rem;
+  right: 4%;
+  color: #FFFAFA;
+  cursor: pointer;
+}
+div#pageMain header div#player {
+  position: absolute;
+  top: 2rem;
+  right: 11.5%;
+  color: #FFFAFA;
+  cursor: pointer;
+}
+div#pageMain header div#setting {  
+  position: absolute;
+  top: 1.5rem;
+  right: 18%;
+  color: #e7e7e7;
+  cursor: pointer;
+}
+
+
+div#pageMain div#displayAreaTop {
+  width: 100%;
+  padding: 0 2rem;
+  height: 10.8rem;
+  position: relative;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight {
+  width: 18rem;
+  height: 10.8rem;
+  position: absolute;
+  top: 0;
+
+  border-top: 2px solid #d8dcdc;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #333;
+  border-left: 2px solid #868888;
+  border-radius: 0;
+  background-image: -webkit-linear-gradient(135deg, #4D4D4D 0%, #666666 20%, #808080 34%, #999999 53%, #4D4D4D 100%);
+  background-image: linear-gradient(-45deg, #4D4D4D 0%, #666666 20%, #808080 34%, #999999 53%, #4D4D4D 100%);
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight {
+  width: 4.6rem;
+  height: 10.8rem;
+  padding: 2px 0px 2px 2px;
+  position: absolute;
+  top: 0;
+  border-right: 1px solid #333;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft {left: 8.125%;}
+div#pageMain div#displayAreaTop div#displayBoardRight {right: 8.125%;}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight {
+  left: 0;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight0,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight1,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight3,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight4,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight5,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight0,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight1,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight3,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight4,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight5 {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  position: absolute;
+  left: 0.7rem;
+  border-width: 0.384rem;
+  border-style: solid;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight0,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight3,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight0,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight3 {
+  top: 0.35rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight1,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight4,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight1,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight4 {
+  top: 3.7rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight5,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight5 {
+  top: 7.05rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight0,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight1,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight3,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight4,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight5 {
+  background-image: -webkit-linear-gradient(135deg, #ffff00, #cccc000);
+  background-image: linear-gradient(-45deg, #ffff00, #cccc000);
+  border-top-color: rgba(255,255,0,.8);
+  border-right-color: rgba(255,255,0,.6);
+  border-bottom-color: rgba(190,190,0,.4);
+  border-left-color: rgba(255,255,0,.3);
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight0,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight1,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight3,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight4,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight5 {
+  background-image: -webkit-linear-gradient(135deg, #4D4D4D, #000);
+  background-image: linear-gradient(-45deg, #4D4D4D, #000);
+  border-top-color: rgba(255,255,255,.8);
+  border-right-color: rgba(255,255,255,.6);
+  border-bottom-color: rgba(255,255,255,.4);
+  border-left-color: rgba(255,255,255,.3);
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight0 span,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight1 span,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setLight2 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight3 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight4 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setLight5 span,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight0 span,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight1 span,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displaySetLeft div#setNotLight2 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight3 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight4 span,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displaySetRight div#setNotLight5 span {
+  display: block;
+  position: absolute;
+}
+.bgCommon {
+  top: -0.384rem;
+  left: -0.384rem;
+  z-index: 1;
+  border-radius: 50%;
+  border-width: 1.5em;
+  border-style: solid;
+}
+.bg2 {
+  transform: rotate(-30deg);
+}
+.bg {
+  transform: rotate(30deg);
+}
+.bg3Yellow {
+  border-top-color: rgba(255,255,0,.8);
+  border-right-color: rgba(255,255,0,.6);
+  border-bottom-color: rgba(255,255,0,.2);
+  border-left-color: rgba(255,255,0,.1);
+}
+.bgYellow {
+  border-top-color: rgba(255,255,0,.4);
+  border-right-color: rgba(255,255,0,.3);
+  border-bottom-color: rgba(255,255,0,.2);
+  border-left-color: rgba(255,255,0,.1);
+}
+.bg3Gray {
+  border-top-color: rgba(255,255,255,.8);
+  border-right-color: rgba(255,255,255,.6);
+  border-bottom-color: rgba(255,255,255,.2);
+  border-left-color: rgba(255,255,255,.1);
+}
+.bgGray {
+  border-top-color: rgba(255,255,255,.4);
+  border-right-color: rgba(255,255,255,.3);
+  border-bottom-color: rgba(255,255,255,.2);
+  border-left-color: rgba(255,255,255,.1);
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayRegLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayRegRight {
+  font-size: 3rem;
+  font-weight: 700;
+  width: 13.4rem;
+  height: 6.7rem;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  vertical-align: middle;
+  color: white;
+}
+.smallRem {
+  font-size: 2.3rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight {
+  width: 13.4rem;
+  height: 4.1rem;
+  position: absolute;
+  top: 6.7rem;
+  border-top: 1px solid #333;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div.flash,
+div#pageMain div#displayAreaTop div#displayBoardRight div.flash {
+  animation: flash 1.61s linear infinite;
+}
+@keyframes flash {
+  0%, 100% {
+    opacity: 1;
+    border: 1px solid #ffffdb;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayRegLeft,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayRegRight,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight {
+  left: 4.6rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight0,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight1,
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight2,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight3,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight4,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight5 {
+  content: "";      // 疑似要素に必須
+  width: 5.3rem;      // 幅いっぱいを指定
+  height: 0.2rem;      // 適度な太さを指定
+  display: inline-block; // 高さをもたせる
+  background: -webkit-gradient(linear, right top, left top, from(#ffd75b), color-stop(30%, #fff5a0), color-stop(40%, #fffabe), color-stop(50%, #ffffdb), color-stop(70%, #fff5a0), to(#fdd456));
+  background: -webkit-linear-gradient(right, #ffd75b 0%, #fff5a0 30%, #fffabe 40%, #ffffdb 50%, #fff5a0 70%, #fdd456 100%);
+  background: linear-gradient(-90deg, #ffd75b 0%, #fff5a0 30%, #fffabe 40%, #ffffdb 50%, #fff5a0 70%, #fdd456 100%);
+  border-radius: 0.1rem;    // 線の端を丸くしたいなら指定する
+  transform: rotate(-40.77deg); // 反時計回りに45度回転させる
+  position: absolute;
+  top: 1.6rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight0 {left: -0.6rem;}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight1 {left: 3.6rem;}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayServeLeft div#serveRight2 {left: 8rem;}
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight3 {left: -0.6rem;}
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight4 {left: 3.6rem;}
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayServeRight div#serveRight5 {left: 8rem;}
+div#pageMain div#displayAreaTop div#displayAreaCenter {
+  width: 4.2rem;
+  height: 10.8rem;
+  position: absolute;
+  top: 0;
+  left: calc((100% - 4.2rem) / 2);
+}
+
+div#pageMain div#displayAreaTop div#displayAreaCenter div#textV,
+div#pageMain div#displayAreaTop div#displayAreaCenter div#textS {
+  font-size: 2.4rem;
+  font-weight: 700;
+  position: absolute;
+  color: #FFFFFF;
+  -webkit-text-stroke: 1px #f5a62b;
+  text-stroke: 1px #f5a62b;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayResultLeft,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayResultRight {
+  font-size: 2.4rem;
+  font-weight: 700;
+  width: 6rem;
+  height: 2.6rem;
+  position: absolute;
+  top: -1.5rem;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayResultLeft.win,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayResultRight.win {
+  left: 13.5rem;
+  color: #fff100;
+}
+div#pageMain div#displayAreaTop div#displayBoardLeft div#displayResultLeft.lose,
+div#pageMain div#displayAreaTop div#displayBoardRight div#displayResultRight.lose {
+  left: 12.5rem;
+  color: #f8f8f8;
+}
+div#pageMain div#displayAreaTop div#displayAreaCenter div#textV{top: 5rem;left: calc((100% - 2.5rem) / 2);}
+div#pageMain div#displayAreaTop div#displayAreaCenter div#textS {top: 5.5rem;right: calc((100% - 2.5rem) / 2);}
+
+
+div#pageMain div#displayAreaBottom {
+  width: 100%;
+  padding: 0 2rem;
+  margin: 1.5rem 0;
+  height: 11.4rem;
+  position: relative;
+}
+div#pageMain div#displayAreaBottom div#displayScoreLeft,
+div#pageMain div#displayAreaBottom div#displayScoreRight {
+  font-size: 7rem;
+  font-weight: 700;
+  width: 12.1rem;
+  height: 11.4rem;
+  position: absolute;
+  top: 0;  
+  text-align: center;
+  vertical-align: middle;
+
+  color: #000000;
+  background: #f5a62b;
+  -webkit-box-shadow: -2px 2px 1px #a6711e;
+  box-shadow: -2px 2px 1px #a6711e;
+}
+div#pageMain div#displayAreaBottom div#displayScoreLeft {left: 8.33%;}
+div#pageMain div#displayAreaBottom div#displayScoreRight {right: 8.125%;}
+div#pageMain div#displayAreaBottom div#displaySetScore {
+  width: 16rem;
+  height: 11.4rem;
+  position: absolute;
+  top: 0;
+  left: calc((100% - 16rem) / 2);
+}
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet0,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet1,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 16rem;
+  height: 3.8rem;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  vertical-align: middle;
+  color: #f5a62b;
+  letter-spacing: 0.1em;
+}
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet0 {top: 0;}
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet1 {top: 3.8rem;}
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet2 {top: 7.6rem;}
+/*質問文の文頭に2倍ダーシと少しの余白を入れるhttps://www.rebirth-j.com/blog/web/post-3140*/
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet0 span#set0Left,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet0 span#set0Right,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet1 span#set1Left,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet1 span#set1Right,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet2 span#set2Left,
+div#pageMain div#displayAreaBottom div#displaySetScore div#displaySet2 span#set2Right {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.1em;
+  
+}
+
+
+div#pageMain div#addArea {
+  width: 100%;
+  padding: 0 2rem;
+  margin: 2rem 0;
+  height: 13rem;
+  position: relative;
+}
+div#pageMain div#addArea div#addButtonLeft,
+div#pageMain div#addArea div#addButtonRight {
+  font-size: 4rem;
+  font-weight: 700;
+  width: 13rem;
+  height: 13rem;
+  line-height: 13rem;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+  border-radius: 50%;
+  color: #000;
+  background-color: #fff100;
+  border-bottom: 2px solid #ccc100;
+  -webkit-box-shadow: 0 5px 0 #e6d900;
+  box-shadow: 0 2px 0 #e6d900;
+}
+div#pageMain div#addArea div#addButtonLeft {
+  left: 15%;
+}
+div#pageMain div#addArea div#addButtonRight {
+  right: 15%;
+}
+div#pageMain div#addArea div#addButtonLeft:hover,
+div#pageMain div#addArea div#addButtonRight:hover  {
+  -webkit-transform: translate(0, 3px);
+  transform: translate(0, 3px);
+  -webkit-box-shadow: 0 2px 0 #e6d900;
+  box-shadow: 0 2px 0 #e6d900;
+}
+div#pageMain div#displayAreaBottom div#displayScoreLeft.active,
+div#pageMain div#displayAreaBottom div#displayScoreRight.active {
+  animation: flashScore 0.616s linear 2;
+}
+@keyframes flashScore {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    background: #fce0b3;
+  }
+}
+
+
+div#pageMain div#footerArea {
+  width: 100%;
+  padding: 0 2rem;
+  height: 6.4rem;
+  position: relative;
+}
+div#pageMain div#footerArea div#backGame {
+  font-size: 3rem;
+  font-weight: 700;
+  width: 6.4rem;
+  height: 6.4rem;
+  line-height: 6.4rem;
+  position: absolute;
+  top: 0;
+  left: 8.125%;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+  border-radius: 50%;
+  color: #fff100;
+  background-color: #4D4D4D;
+  border-bottom: 2px solid #ccc100;
+  -webkit-box-shadow: 0 5px 0 #333;
+  box-shadow: 0 2px 0 #333;
+}
+div#pageMain div#footerArea div#sendResult0,
+div#pageMain div#footerArea div#sendResult1,
+div#pageMain div#footerArea div#sendResult2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  width: 12.9rem;
+  height: 6.4rem;
+  line-height: 3.2rem;
+  position: absolute;
+  top: 0;
+  left: calc((100% - 12.9rem) / 2);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  color: #fff100;
+  background-color: #4D4D4D;
+  border-bottom: 2px solid #ccc100;
+  -webkit-box-shadow: 0 5px 0 #333;
+  box-shadow: 0 2px 0 #333;
+}
+div#pageMain div#footerArea button#goToTop {
+  font-size: 2rem;
+  font-weight: 700;
+  width: 12.9rem;
+  height: 6.4rem;
+  line-height: 3.2rem;
+  position: absolute;
+  top: 0;
+  left: calc((100% - 12.9rem) / 2);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  color: #fff100;
+  background-color: #4D4D4D;
+  border-bottom: 2px solid #ccc100;
+  -webkit-box-shadow: 0 5px 0 #333;
+  box-shadow: 0 2px 0 #333;
+}
+
+
+div#pageMain div#timerArea {
+  width: 100%;
+  padding: 0 2rem;
+  margin: 2rem auto;
+  height: 6rem;
+  text-align: center;
+}
+div#pageMain div#timerArea div#counter {
+  font-size: 3rem;
+  font-weight: 550;
+  width: 12rem;
+  height:4rem;
+  border-radius: 2px;
+  background: #fffafa;
+  color: #000;
+  margin: 0 1rem;
+}
+div#pageMain div#timerArea i#bStart {
+  color: #fff100;
+  margin: 0 1rem;
+}
+div#pageMain div#timerArea i#bReset {
+  color: #c94031;
+  margin: 0 1rem;
+}
+div#pageMain div#timerArea div#timerButton1,
+div#pageMain div#timerArea div#timerButton2 {
+  font-size: 3rem;
+  font-weight: 550;
+  color: #fffafa;
+  margin: 0 1rem;
+}
+.box {
+  display: inline-block;
+}
+
+
+
+
+
+/* 終わり。審判画面 *///////////////////////////////////////////////////////////////////////////////////////////////
+</style>
