@@ -21,3 +21,6 @@
 
 ### 注意点
 - GoogleAppScriptはhtmlファイルのみ扱える。よって、css 及び js ファイルをそれぞれ <style> 及び <script> タグで囲い、htmlファイルにする事でウェブアプリ化が出来る。
+
+### その他参考サイト
+- 今回のウェブサイトを作成する動機となった2019年開催の大会情報サイト(http://fukushimasepak.herokuapp.com/?fbclid=IwAR2BglJmHYsnsrA9hNY_rGkyDvOL6Dm32Sj8W4oWIUVuCoKiF9qy-e6NnZ0)
