@@ -1,0 +1,788 @@
+<script>
+$(function(){
+
+  // 試合結果をクリップボードにコピー出来るようにする
+  // 初心者モード、審判で必要なセリフを表示 
+  // CSSの最適化
+  // スプレッドシートでもし勝者が空白だったら、第何試合の勝者を表示し、空白じゃなかったらそのレグ名を表示するようにする。
+  // 分割代入で、交換の所を書き直す
+
+  //変数定義////////////////////////////////////////////////////////////////////////////
+    const generate2DArray = (m, n) => {
+      return Array.from(new Array(m), _ => new Array(n).fill(0));
+    };
+    var finSet = [0, 0, 0]; // セットが終了しているか。0:未、1:済。左から1,2,3セット
+    var curSet = 0; //currentset. 今何セットか0:1セット, 1:2セット, 2:3セット
+    var his = []; // history.得点したチーム名が入る(0:"a"or1:"b")
+    var hisSet = []; // historySet. セットを獲得したチーム名が入る(0:"a"or1:"b")
+    var cntNum = [0, 0, 0]; //セット開始から何回目のターンか数える。左から1,2,3セット
+    var sets = [0, 0]; //sets[0]:Aレグが取っているセット数, sets[1]:Aレグが取っているセット数
+    var points = generate2DArray(2, 3); //points_sets. points[0]:Aレグ, points[1]:Bレグ, points[0][0]:Aレグ1セット
+    var courtA = 0; //初期設定後固定値。Aレグのコート位置。0:審判から見て左、1:右
+    var changeCourt3Set = 0; //コート交換が既に行われていたか。0:未、1:済
+    var serveA = 0; //初期設定後固定値。Aレグがサーブ権。0:Aレグがサーブ、1:Bレグがサーブ
+    var serveRight = 0; //表示設定。0:左側、1:右側
+    var serveCase = 0; //ケース。0:左から右、1:右から左
+    var serveGroup = 0; //0:serveStockが0,1,2の時, 1:serveStockが3,4,5の時
+    var serveStock = 0; //cnt_set%6の値。
+    var reg = ["", ""] // レグ。固定値。0:A, 1:B 
+    var rowNumber = 0; // この試合のスプレッドシートの行番号
+    var smlFont = [0, 0, 0, 0]; // smlFont[0]:Aレグrem, smlFont[1]:Bレグrem、smlFont[0]:Aレグpx, smlFont[1]:Bレグpx, smlFont[0]==1:smallFont 適用
+  //変数定義終わり////////////////////////////////////////////////////////////////////////////
+
+  // モーダルウィンドウ///////////////////////////////////////////////////////
+    $('.js-open').click(function () {
+      var id = $(this).data('id'); // 何番目のキャプション（モーダルウィンドウ）か認識
+      $('#overlay, .modal-window[data-id="modal' + id + '"]').fadeIn();
+    });
+    // オーバーレイクリックでもモーダルを閉じるように
+    $('.js-close , #overlay').click(function () {
+      $('#overlay, .modal-window').fadeOut();
+    });
+    // コート・サーブ権の選択
+    $('#settingChangeCourt').click(function () {
+      $(this).blur();
+
+      courtA = 1 - courtA; // コートの交換
+      $('#settingLeftReg').text(reg[courtA]);
+      $('#settingRightReg').text(reg[1 - courtA]);
+
+      var word = $('#settingServeLeft').text(); // 単語の交換
+      $('#settingServeLeft').text($('#settingServeRight').text());
+      $('#settingServeRight').text(word);
+
+      smlFont.splice(0, 4, smlFont[2], smlFont[3], smlFont[0], smlFont[1]); // 文字の交換
+
+      displayFigure();
+      return false;
+    });
+    $('#settingChangeServe').click(function () {
+      $(this).blur();
+
+      serveA = 1 - serveA; // サーブ権の交換
+
+      var word = $('#settingServeLeft').text(); // 単語の交換
+      $('#settingServeLeft').text($('#settingServeRight').text());
+      $('#settingServeRight').text(word);
+
+      displayFigure();
+      return false;
+    });
+  // モーダルウィンドウ終わり//////////////////////////////////////////////////
+
+
+  // スプラッシュスクリーン＋トップ画面//////////////////////////////////////////
+    function displaySplash() {
+    /* スプラッシュスクリーンの表示 */
+      $('#pageSplash').show();
+      setTimeout(function(){
+          $('#pageSplash').fadeOut(1500, function(){
+              //トップ画面表示
+              $('#pageTop').show();
+          }); 
+      },1500);
+
+    /* 次へボタンをクリック */
+      $('#nextButton button').on('click',function(){
+          $(this).blur();
+          
+          //input要素を取得
+          var gameNumber = $('#gameNumberInput').val();
+          var gamePass = $('#gamePassInput').val();
+          check(gameNumber, gamePass); // input要素を照合
+          
+          return false;
+      });
+    }
+    displaySplash();
+  // 終わり。スプラッシュスクリーン＋トップ画面//////////////////////////////////////////
+
+  // メイン画面////////////////////////////////////////////////////////////////////  
+  
+
+  // 点数追加処理
+    $('#addButtonLeft').on('click',function(){
+      $(this).blur();
+      if ($('#displayScoreLeft').hasClass("active")) { // 得点版を点滅させるために
+        $('#displayScoreLeft').removeClass("active"); 
+        $('#displayScoreLeft')[0].offsetWidth = $('#displayScoreLeft')[0].offsetWidth;
+        $('#displayScoreLeft').addClass("active")
+      }else {
+        $('#displayScoreLeft').addClass("active");
+      }    
+
+      var num = checkCourt()
+      his.push(num);
+      points[num][curSet] += 1;
+      checkSet();
+      displayFigure();
+
+      return false;
+    });
+
+    $(document).on('click', '#addButtonRight', function(){
+      $(this).blur();
+
+      if ($('#displayScoreRight').hasClass("active")) { // 得点版を点滅させるためにhttps://blog.ariafloat.com/article/cssanimationrestart/
+        $('#displayScoreRight').removeClass("active"); 
+        $('#displayScoreRight')[0].offsetWidth = $('#displayScoreRight')[0].offsetWidth;
+        $('#displayScoreRight').addClass("active")
+      }else {
+        $('#displayScoreRight').addClass("active");
+      }      
+
+      var num = checkCourt()
+      his.push(1 - num);
+      points[1 - num][curSet] += 1;
+      checkSet();
+      displayFigure();
+
+      return false;
+    });
+
+  // 結果送信ボタン処理
+    // 1セット目
+    $('#sendResult0').on('click',function(){
+      $(this).blur();
+      $('#sendResult0').hide();
+      deleteServe(); //サーブ欄の表示を消す
+      sendResult(0, rowNumber, points[0][0], points[1][0], sets[0], sets[1]); // 値をスプレッドシートへ送信する
+      curSet += 1; // セット数を１増やす
+      // 次のセット用にボタンを再表示
+      $('#addButtonLeft').show();
+      $('#addButtonRight').show();
+      displayFigure();
+      return false;
+    });
+
+    // 2セット目
+    $('#sendResult1').on('click',function(){
+      $(this).blur();
+      $('#sendResult1').hide();
+      deleteServe(); // サーブ欄の表示を消す       
+      // 試合終了かを確認して条件分岐
+      if (checkGame()) { // 続行
+        sendResult(1, rowNumber, points[0][1], points[1][1], sets[0], sets[1]); //値をスプレッドシートへ送信する
+        curSet += 1; // セット数を１増やす
+        $('#addButtonLeft').show(); // 次のセット用にボタンを再表示
+        $('#addButtonRight').show();
+        displayFigure();
+      }else { // 終了なら、終了画面へ
+        sendResultFin(1, rowNumber, points[0][1], points[1][1], sets[0], sets[1], hisSet, reg);
+        $('#backGame').hide();
+        $('#pageMain').hide();
+        $('#pageEnd').show();
+      }
+      return false;
+    });
+
+    // 3セット目
+    $('#sendResult2').on('click',function(){
+      $(this).blur();
+      $('#sendResult2').hide();
+      deleteServe(); // サーブ欄の表示を消す 
+      sendResultFin(2, rowNumber, points[0][2], points[1][2], sets[0], sets[1], hisSet, reg); // 値をシートへ送信する
+      $('#backGame').hide();
+      $('#pageMain').hide(); // メイン画面を隠し、終了画面へ
+      $('#pageEnd').show();
+      return false;
+    });
+
+  // １つ前に戻るボタン
+    $('#backGame').on('click',function(){
+      $(this).blur(); // ボタンからフォーカスを外す
+      backGameProcess(); // 戻す処理
+      return false;
+    });
+  // 終わり。メイン画面////////////////////////////////////////////////////////////////////
+  
+
+  // エンド画面//////////////////////////////////////////////////////////////////////////
+    $('#backResult').on('click', function(){ // 試合結果をもう一度見るボタン
+      $(this).blur();
+      $('#pageEnd').hide(); // 終了画面を隠し、メイン画面へ
+      $('#pageMain').show();
+      $('#goToTop').show();
+      return false;
+    });
+  // 終わり。エンド画面////////////////////////////////////////////////////////////////////
+
+
+  // 関数。スプラッシュスクリーン＋トップ画面//////////////////////////////////////////
+  // 試合番号とパスワードのチェック
+    function check(gameNumber, gamePass) {
+      $('#alert').text('照合中...');  
+      google.script.run.withSuccessHandler(onSuccess).withFailureHandler(failure).checkPassword(gameNumber, gamePass);
+    }
+    function onSuccess(result) {
+      if (result == false) {
+        failure();
+      }else {
+        $('#sec').text(result[0]);
+        $('#st').text(result[1]);
+        $('#court').text(result[2]);
+        $('#gm_num').text(result[3]);
+        $('#gm_name').text(result[4]);
+        $('#leftReg').text(result[5]);
+        $('#rightReg').text(result[6]);
+        $('#settingLeftReg').text(result[5]);
+        $('#settingRightReg').text(result[6]);
+        $('#playerLeftReg').text(result[5]);
+        $('#playerRightReg').text(result[6]);
+        $('#playerLeft').text(result[7]+'/'+result[8]+'/'+result[9]+'/'+result[10]+'/'+result[11]);
+        $('#playerRight').text(result[12]+'/'+result[13]+'/'+result[14]+'/'+result[15]+'/'+result[16]);
+        reg[0] = result[5];
+        reg[1] = result[6];
+        rowNumber = result[17];
+        checkFontSize ();
+        $('#pageTop').hide(); // トップ画面を隠す
+        duplicateElement(); // メイン画面の初期化
+        $('#pageMain').show(); // メイン画面を表示
+        var id = $('#nextButton button').data('id'); // 何番目のキャプション（モーダルウィンドウ）か認識
+        $('#overlay, .modal-window[data-id="modal' + id + '"]').fadeIn();
+      }        
+    }
+    function failure() {
+      $('#alert').text('試合番号/パスワードが異なる、または既に終了しています。');      
+    }
+  // 関数終わり。スプラッシュスクリーン＋トップ画面//////////////////////////////////////////
+
+
+  // 関数。メイン画面///////////////////////////////////////////////////////////////////
+  // 複製と隠す初期化
+    function duplicateElement() {
+    /* 複製して配置 */
+      $('#serveRight0').clone().appendTo('#displayServeLeft').attr('id', 'serveRight1');
+      $('#serveRight0').clone().appendTo('#displayServeLeft').attr('id', 'serveRight2');
+      $('#serveRight0').clone().appendTo('#displayServeRight').attr('id', 'serveRight3');
+      $('#serveRight0').clone().appendTo('#displayServeRight').attr('id', 'serveRight4');
+      $('#serveRight0').clone().appendTo('#displayServeRight').attr('id', 'serveRight5');
+
+      $('#currentScore1').clone().appendTo('#displayArea').attr('id', 'currentScore2');
+
+      $('#addButtonLeft').clone().appendTo('#addArea').attr('id', 'addButtonRight');
+
+    // まだ使わない要素を隠す
+      $('#sendResult0').hide();
+      $('#sendResult1').hide();
+      $('#sendResult2').hide();
+      $('#goToTop').hide();
+
+    // 数字を代入
+      displayFigure();
+    }
+
+  // 得点後にそのセットが終了していないかを調べる
+    function checkSet() {
+      var reg = his[his.length - 1];
+      cntNum[curSet] += 1;
+      if (points[reg][curSet] == 25) { //curSet,1,2にする
+        sets[reg] += 1;
+        hisSet.push(reg);        
+        endSet(curSet);          
+      }else if (points[reg][curSet] >= 21) {
+        if (points[1 - reg][curSet] <= 19 ) {
+          sets[reg] += 1;
+          hisSet.push(reg);        
+          endSet(curSet);
+        }else if (points[1 - reg][curSet] >= 20) {
+          if (points[reg][curSet] - points[1 - reg][curSet] >= 2) {
+            sets[reg] += 1;
+            hisSet.push(reg);        
+            endSet(curSet);
+          }else if (points[1 - reg][curSet] - points[reg][curSet] >= 2) {
+            sets[1 - reg] += 1;
+            hisSet.push(1 - reg);        
+            endSet(curSet);
+          }
+        }
+      }
+      // 3セット目はコートの交換基準に達していないかも確認する(一方のレグが11点に達したら交換)
+      if (points[reg][2] == 11 && points[1 - reg][2] < 11 && changeCourt3Set == 0) {
+        changeCourt3Set = 1;
+      }
+      // 繰り返し動作を関数化
+      function endSet(setNum) {
+        $('#addButtonLeft').hide();
+        $('#addButtonRight').hide();
+        finSet[setNum] = 1;
+        if (setNum == 0) {
+          $('#sendResult0').show();
+        }else if(setNum == 1) {
+          $('#sendResult1').show();
+        }else if(setNum == 2) {
+          $('#sendResult2').show();
+        }
+        // $(eval('#sendResult'+curSet)).show();
+      }
+    }
+
+  // 試合が続行しているか調べる。finのon/off。終了済の表示
+    function checkGame() {
+      if (sets[0] == 2 || sets[1] == 2) { // 終了
+        return false;
+      }else { // 続行
+        return true;
+      }
+    }
+
+  // Aレグのコート位置が左かどうかを返す
+  function checkCourt() {
+    // 0:A左・B右, 1:B左・A右
+    return (curSet + courtA + changeCourt3Set) % 2;
+  }
+    
+  // 表示する数字を変数に代入する
+    function displayFigure() {
+      var num = checkCourt();
+      $('#set0Left').text(points[num][0]);
+      $('#set1Left').text(points[num][1]);
+      $('#set2Left').text(points[num][2]);
+      $('#set0Right').text(points[1 - num][0]);
+      $('#set1Right').text(points[1 - num][1]);
+      $('#set2Right').text(points[1 - num][2]);
+      $('#displayScoreLeft').text(points[num][curSet]); // スコア
+      $('#displayScoreRight').text(points[1 - num][curSet]);
+      $('#leftReg').text(reg[num]); // レグ名
+      $('#rightReg').text(reg[1 - num]);
+
+      // サーブマーク
+      checkServeRight();      
+
+      // 戻るボタンの表示・非表示
+      if (cntNum[curSet] == 0) {
+        $('#backGame').hide();
+        $('#setting').show();
+      }else if (cntNum[curSet] == 1) {
+        $('#backGame').show();
+        $('#setting').hide();
+      }
+
+      // 文字の大きさ
+      if (num == 0) {
+        if (smlFont[0] == 1 && $('#leftReg').hasClass("smallRem") == false) {
+            $('#leftReg').addClass("smallRem")
+        }else if (smlFont[0] == 0 && $('#leftReg').hasClass("smallRem") == true) {
+            $('#leftReg').removeClass("smallRem")
+        }
+        if (smlFont[1] == 1 && $('#settingLeftReg').hasClass("smallPx") == false) {
+            $('#settingLeftReg').addClass("smallPx")
+        }else if (smlFont[1] == 0 && $('#settingLeftReg').hasClass("smallPx") == true) {
+            $('#settingLeftReg').removeClass("smallPx")
+        }
+        if (smlFont[2] == 1 && $('#rightReg').hasClass("smallRem") == false) {
+            $('#rightReg').addClass("smallRem")
+        }else if (smlFont[2] == 0 && $('#rightReg').hasClass("smallRem") == true) {
+            $('#rightReg').removeClass("smallRem")
+        }
+        if (smlFont[3] == 1 && $('#settingRightReg').hasClass("smallPx") == false) {
+            $('#settingRightReg').addClass("smallPx")
+        }else if (smlFont[3] == 0 && $('#settingRightReg').hasClass("smallPx") == true) {
+            $('#settingRightReg').removeClass("smallPx")
+        }
+      }else {
+        if (smlFont[2] == 1 && $('#leftReg').hasClass("smallRem") == false) {
+            $('#leftReg').addClass("smallRem")
+        }else if (smlFont[2] == 0 && $('#leftReg').hasClass("smallRem") == true) {
+            $('#leftReg').removeClass("smallRem")
+        }
+        if (smlFont[3] == 1 && $('#settingLeftReg').hasClass("smallPx") == false) {
+            $('#settingLeftReg').addClass("smallPx")
+        }else if (smlFont[3] == 0 && $('#settingLeftReg').hasClass("smallPx") == true) {
+            $('#settingLeftReg').removeClass("smallPx")
+        }
+        if (smlFont[0] == 1 && $('#rightReg').hasClass("smallRem") == false) {
+            $('#rightReg').addClass("smallRem")
+        }else if (smlFont[0] == 0 && $('#rightReg').hasClass("smallRem") == true) {
+            $('#rightReg').removeClass("smallRem")
+        }
+        if (smlFont[1] == 1 && $('#settingRightReg').hasClass("smallPx") == false) {
+            $('#settingRightReg').addClass("smallPx")
+        }else if (smlFont[1] == 0 && $('#settingRightReg').hasClass("smallPx") == true) {
+            $('#settingRightReg').removeClass("smallPx")
+        }
+      }
+      
+
+      addRemoveFlash();
+      onOffLight();
+    }
+
+  // 結果を送信する
+    function sendResult(setNum, rowNumber, pointA, pointB, setA, setB) {
+      google.script.run.withSuccessHandler(successResult).withFailureHandler(failureResult).sendToSpread(setNum, rowNumber, pointA, pointB, setA, setB);
+    }
+    function sendResultFin(setNum, rowNumber, pointA, pointB, setA, setB, hisSet, aReg, bReg) {
+      google.script.run.withSuccessHandler(successResult).withFailureHandler(failureResult).sendToSpreadFin(setNum, rowNumber, pointA, pointB, setA, setB, hisSet, aReg, bReg);
+    }
+    function successResult() {
+      alert("結果送信に成功しました");
+    }
+    function failureResult() {
+      alert("結果送信に失敗しました");
+    }
+
+  // サーバー権がどちらかを判別する
+    function checkServeRight() {
+      if (cntNum[curSet] == 0) { // セットの最初だったら
+        serveCase = 2;
+        serveRight = (curSet + courtA + serveA) % 2;
+      }else { // 0点以外だったら
+        if (cntNum[curSet] < 42) {
+          serveStock = (cntNum[curSet] % 6);
+          serveGroup = (serveStock / 3)|0; // serveStock0,1,2は0, 3,4,5は1にする
+          // if (serveStock == 0 || serveStock == 1 || serveStock == 2) {
+          //   serveGroup = 0;
+          // }else if (serveStock == 3 || serveStock == 4 || serveStock == 5) {
+          //   serveGroup = 1;
+          // }
+          if ((curSet + courtA + serveA + changeCourt3Set + serveGroup) % 2 == 0) {
+            serveRight = 0;
+            serveCase = serveGroup;
+          }else {
+            serveRight = 1;
+            serveCase = 1 - serveGroup;
+          }
+        }else if (cntNum[curSet] >= 42) {
+          serveCase = 2;
+          serveRight = ((curSet + courtA + serveA + changeCourt3Set + (cntNum[curSet] - 42) % 2) % 2);
+        }
+      }
+
+      deleteServe();
+      if (serveCase == 0) {
+        if (serveStock == 0) {
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+          $('#serveRight2').show();
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+          $('#serveRight5').show();
+        }else if (serveStock == 1) {
+          $('#serveRight0').show();
+        }else if (serveStock == 2) {
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+        }else if (serveStock == 3) {
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+          $('#serveRight2').show();
+        }else if (serveStock == 4) {
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+          $('#serveRight2').show();
+          $('#serveRight3').show();
+        }else if (serveStock == 5) {
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+          $('#serveRight2').show();
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+        }
+        // }else {
+        //   for (var i=1; i<=serveStock; i++) {
+        //     $(eval('#serveRight'+serveStock)).show();
+        //   }
+        // }
+      }else if (serveCase == 1) {
+        if (serveStock == 1) {
+          $('#serveRight3').show();
+        }else if (serveStock == 2) {
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+        }else if (serveStock == 3) {
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+          $('#serveRight5').show();
+        }else if (serveStock == 4) {
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+          $('#serveRight5').show();
+          $('#serveRight0').show();
+        }else if (serveStock == 5) {
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+          $('#serveRight5').show();
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+        }else if (serveStock == 0) {
+          $('#serveRight3').show();
+          $('#serveRight4').show();
+          $('#serveRight5').show();
+          $('#serveRight0').show();
+          $('#serveRight1').show();
+          $('#serveRight2').show();
+        }
+      }
+    }
+  // サーブマークを消す
+    function deleteServe() {
+      // for (var i=1; i<=6; i++) {
+      //   $(eval('#serveRight'+i)).hide();
+      // }
+      $('#serveRight0').hide();
+      $('#serveRight1').hide();
+      $('#serveRight2').hide();
+      $('#serveRight3').hide();
+      $('#serveRight4').hide();
+      $('#serveRight5').hide();
+    }
+
+  // サーブの枠用の"flash"クラスを追加・削除する
+    function addRemoveFlash () {
+      if (serveRight == 0) {
+        if ($('#displayServeLeft').hasClass("flash") == false) { // "flash"クラスがなければ追加
+          $('#displayServeLeft').addClass("flash");
+        }
+        if ($('#displayServeRight').hasClass("flash")) { // "flash"クラスがあれば削除
+          $('#displayServeRight').removeClass("flash");
+        }
+      }else if (serveRight == 1) {
+        if ($('#displayServeLeft').hasClass("flash")) { // "flash"クラスがあれば削除
+          $('#displayServeLeft').removeClass("flash");
+        }
+        if ($('#displayServeRight').hasClass("flash") == false) { // "flash"クラスがなければ追加
+          $('#displayServeRight').addClass("flash");
+        }
+      }
+      if (finSet[curSet] == 1) {
+        if ($('#displayServeRight').hasClass("flash")) { // "flash"クラスがあれば削除
+          $('#displayServeRight').removeClass("flash");
+        }
+        if ($('#displayServeLeft').hasClass("flash")) { // "flash"クラスがあれば削除
+          $('#displayServeLeft').removeClass("flash");
+        }
+      }
+    }
+
+  // ひとつ前に戻るボタンが押された時の処理
+    function backGameProcess() {
+      var reg = his[his.length - 1];
+      if (finSet[curSet] == 0 && cntNum[curSet] > 0) {
+        if (curSet == 2 && points[reg][curSet] == 11 && points[1 - reg][curSet] < 11) {
+          changeCourt3Set = 0;
+        }
+        points[reg][curSet] -= 1;
+        cntNum[curSet] -= 1;
+        his.pop();
+      }else {
+        points[reg][curSet] -= 1;
+        sets[reg] -= 1;
+        cntNum[curSet] -= 1;
+        his.pop();
+        hisSet.pop();
+        finSet[curSet] = 0;
+        $('#addButtonLeft').show();
+        $('#addButtonRight').show();
+        if (curSet == 0) {
+          $('#sendResult0').hide();
+        }else if (curSet == 1) {
+          $('#sendResult1').hide();
+        }else if (curSet == 2) {
+          $('#sendResult2').hide();
+        }
+        // $(eval('#sendResult'+curSet)).hide();
+      }
+      displayFigure();
+    }
+
+  // ライトの制御
+    function onOffLight() {
+      // for (var i=1; i<=6; i++) {
+      //   $(eval('#setLight'+i)).hide();
+      //   $(eval('#setNotLight'+i)).show();
+      // }
+      $('#setLight0').hide();
+      $('#setLight1').hide();
+      $('#setLight2').hide();
+      $('#setLight3').hide();
+      $('#setLight4').hide();
+      $('#setLight5').hide();
+      $('#setNotLight0').show();
+      $('#setNotLight1').show();
+      $('#setNotLight2').show();
+      $('#setNotLight3').show();
+      $('#setNotLight4').show();
+      $('#setNotLight5').show();
+      $("#displayResultLeft").hide();
+      $("#displayResultRight").hide();
+      if ($("#displayResultLeft").hasClass("win")) {
+        $("#displayResultLeft").removeClass("win");
+      }else if ($("#displayResultLeft").hasClass("lose")) {
+        $("#displayResultLeft").removeClass("lose");
+      }
+      if ($("#displayResultRight").hasClass("win")) {
+        $("#displayResultRight").removeClass("win");
+      }else if ($("#displayResultRight").hasClass("lose")) {
+        $("#displayResultRight").removeClass("lose");
+      }
+      // for (var i=0; i<=curSet; i++) {
+      //   if (finSet[curSet] == 1) {
+      //     if ((checkCourt() + hisSet[curSet]) % 2 == 0) {
+      //         $(eval('#setNotLight'+curSet)).hide();
+      //         $(eval('#setLight'+curSet)).show();
+      //     }else {
+      //         $(eval('#setNotLight'+curSet+3)).hide();
+      //         $(eval('#setLight'+curSet+3)).show();
+      //     }
+      //   }
+      // }
+      if (finSet[0] == 1) {
+        if ((checkCourt() + hisSet[0]) % 2 == 0) {
+            $('#setNotLight0').hide();
+            $('#setLight0').show();
+        }else {
+            $('#setNotLight3').hide();
+            $('#setLight3').show();
+        }
+      }
+      if (finSet[1] == 1) {
+        if ((checkCourt() + hisSet[1]) % 2 == 0) {
+            $('#setNotLight1').hide();
+            $('#setLight1').show();
+        }else {
+            $('#setNotLight4').hide();
+            $('#setLight4').show();
+        }
+      }
+      if (finSet[2] == 1) {
+        if ((checkCourt() + hisSet[2]) % 2 == 0) {
+            $('#setNotLight2').hide();
+            $('#setLight2').show();
+        }else {
+            $('#setNotLight5').hide();
+            $('#setLight5').show();
+        }
+      }
+      if (curSet >= 1) {
+        if ((checkCourt() == 0 && sets[0] == 2) || (checkCourt() == 1 && sets[1] == 2)) {
+          $("#displayResultLeft").text("WIN");
+          $("#displayResultLeft").addClass("win");
+          $("#displayResultRight").text("LOSE");
+          $("#displayResultRight").addClass("lose");
+          $("#displayResultLeft").show();
+          $("#displayResultRight").show();
+        }else if ((checkCourt() == 0 && sets[1] == 2) || (checkCourt() == 1 && sets[0] == 2)) {
+          $("#displayResultLeft").text("LOSE");
+          $("#displayResultLeft").addClass("lose");
+          $("#displayResultRight").text("WIN");
+          $("#displayResultRight").addClass("win");
+          $("#displayResultLeft").show();
+          $("#displayResultRight").show();
+        }
+      }
+      
+    }
+  // テキストの幅を取得する
+  const getTextWidth = text => {
+    const span = document.createElement('span');
+    span.innerText = text;
+    span.style.visibility = 'hidden';
+    document.body.appendChild(span);
+
+    // offsetWidthができたらすぐに消す  
+    setTimeout(() => {
+      document.body.removeChild(span);
+    }, 0);
+    
+    return span.offsetWidth || 0;
+  };
+
+  // フォントサイズによって、ボードに表示する文字の大きさを変える
+  function checkFontSize () {  
+    let root = document.documentElement; //htmlのルート要素を取得
+    let style = window.getComputedStyle(root).getPropertyValue('font-size'); //ルート要素のcssプロパティを全て取得し、その中からフォントサイズを取得
+    let stFontSize = parseFloat(style); //float型の数値に変換
+    
+    var width = [getTextWidth(reg[0]), getTextWidth(reg[1])];
+    if (width[0] > 6*stFontSize) {
+      $('#leftReg').addClass("smallRem");
+      smlFont[0] = 1;
+    }
+    if (width[0] > 40) {
+      $('#settingLeftReg').addClass("smallPx");
+      smlFont[1] = 1;
+    }
+    if (width[1] > 6*stFontSize) {
+      $('#rightReg').addClass("smallRem");
+      smlFont[2] = 1;
+    }
+    if (width[1] > 40) {
+      $('#settingRightReg').addClass("smallPx");
+      smlFont[3] = 1;
+    }
+  }
+
+  // カウントダウンタイマー
+  // var defCount = 120;
+  var count = 120;
+  var timerID;
+  $('#bReset').hide();
+  // $('#counter').text(defCount);
+
+  $('#bStart').click(function () {
+    countStart(120);
+  });
+  $('#bReset').click(function () {
+    countStop();
+  });
+  $('#timerButton1').click(function () {
+    setTimer(60);
+  });
+  $('#timerButton2').click(function () {
+    setTimer(120);
+  });
+
+  function countStart(num) {
+    //カウント開始
+    $('#bStart').hide();
+    $('#bReset').show();
+    count = num;
+    timerID = setInterval(function(){
+      //カウント表示
+      count--;
+      $('#counter').text(countFormat(count));
+      if (count <= 0) {
+        countStop();
+      }
+    },1000);      
+    function countFormat(num) {
+      //カウント表示の書式設定
+      var tm,ts;
+      tm = (num / 60)|0; //分
+      ts = num % 60; //秒
+      if (ts < 10) ts = "0" + ts;
+      return tm + ":" + ts;
+    }
+  }
+  function countStop() {
+    //カウント停止
+    clearInterval(timerID);
+    timerReset();
+  }
+  function timerReset() {
+    //タイマーの初期化
+    timerID = 0;
+    $('#counter').text("02:00");
+    $('#bStart').show();
+    $('#bReset').hide();
+  }
+  function setTimer(num) {
+    //規定時間の設定
+    if (timerID > 0) {
+      countStop();
+    }
+    $('#counter').text(num);
+    countStart(num);
+  }
+
+  // reloadを禁止する方法
+  // ページ離脱時alertを出す方法
+  window.addEventListener('beforeunload', function (e) {  
+      // メッセージを表示する
+      e.returnValue = '本当にページ移動しますか？';  
+  });
+  // 関数終わり。メイン画面///////////////////////////////////////////////////////////////////
+});
+
+</script>
