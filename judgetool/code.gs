@@ -23,7 +23,7 @@ function getFileUrl(id){
 
 // トップ画面から入力された値を元に、試合番号とパスワードを照合する
 function checkPassword(gameNumber, gamePass) {
-  var sh = SpreadsheetApp.openById("16a_bxPKGMt_9ZZ-Q9kNrta2KGo8ruo15h9B_yo6BLx4");
+  var sh = SpreadsheetApp.openById("######################################");
   var ss = sh.getSheets()[0];
   var gmList = ss.getRange(2, 5, ss.getLastRow() - 1).getValues();
   var gmListRetouched = [];
