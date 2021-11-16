@@ -1,0 +1,270 @@
+<script>
+function searchEvent(btn) {
+  // var tbl = new Array(3);
+  // for(let y = 0; y < 3; y++) {
+  //   tbl[y] = new Array(3).fill(0);
+  // }
+  const sec = [];
+  const st = [];
+  const court = [];
+  const gm_num = [];
+  const gm_name = [];
+  const a_reg = [];
+  const b_reg = [];
+  const w_next = [];
+  const l_next = [];
+  const a_sets = [];
+  const b_sets = [];
+  const a_1 = [];
+  const a_2 = [];
+  const a_3 = [];
+  const b_1 = [];
+  const b_2 = [];
+  const b_3 = [];
+  const fin = [];
+
+  const i_stock = [];
+  var emp_flag = 0;
+  
+  // index.html のhidden list から値を全て取ってくる
+  const sec_list = document.getElementById("sec_list").getElementsByTagName("li");
+  const st_list = document.getElementById("st_list").getElementsByTagName("li");
+  const court_list = document.getElementById("court_list").getElementsByTagName("li");
+  const gm_num_list = document.getElementById("gm_num_list").getElementsByTagName("li");
+  const gm_name_list = document.getElementById("gm_name_list").getElementsByTagName("li");
+  const a_reg_list = document.getElementById("a_reg_list").getElementsByTagName("li");
+  const b_reg_list = document.getElementById("b_reg_list").getElementsByTagName("li");
+  const w_next_list = document.getElementById("w_next_list").getElementsByTagName("li");
+  const l_next_list = document.getElementById("l_next_list").getElementsByTagName("li");
+  const a_sets_list = document.getElementById("a_sets_list").getElementsByTagName("li");
+  const b_sets_list = document.getElementById("b_sets_list").getElementsByTagName("li");
+  const a_1_list = document.getElementById("a_1_list").getElementsByTagName("li");
+  const a_2_list = document.getElementById("a_2_list").getElementsByTagName("li");
+  const a_3_list = document.getElementById("a_3_list").getElementsByTagName("li");
+  const b_1_list = document.getElementById("b_1_list").getElementsByTagName("li");
+  const b_2_list = document.getElementById("b_2_list").getElementsByTagName("li");
+  const b_3_list = document.getElementById("b_3_list").getElementsByTagName("li");
+  const fin_list = document.getElementById("fin_list").getElementsByTagName("li");
+  
+  // 検索窓に入力された文字を取得する
+  const inputSt = document.getElementById("TimeSelect").value;
+  const inputCourt = document.getElementById("CourtSelect").value;
+  const inputGame = document.getElementById("GameSelect").value;
+  const inputRegu = document.getElementById("ReguSelect").value;
+
+  if (inputSt !== "") {
+    for (var i=0; i<st_list.length; i++) {
+      if (st_list[i].textContent.indexOf(inputSt) !== -1) {
+        if (i_stock.indexOf(i) == -1) { //i_stockに数字がまだなかったら格納
+          if (btn == 0) {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 1 && fin_list[i].textContent == "1") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 2 && fin_list[i].textContent == "") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }
+        }
+      }
+    }
+  }
+
+  if (inputCourt !== "") {
+    for (var i=0; i<court_list.length; i++) {
+      if (court_list[i].textContent.indexOf(inputCourt) !== -1) {
+        if (i_stock.indexOf(i) == -1) {
+          if (btn == 0) {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 1 && fin_list[i].textContent == "1") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 2 && fin_list[i].textContent == "") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }
+        }
+      }
+    }
+  }
+  
+  if (inputGame !== "") {
+    for (var i=0; i<gm_num_list.length; i++) {
+      if (gm_num_list[i].textContent.indexOf(inputGame) != -1) {
+        if (i_stock.indexOf(i) == -1) {
+          if (btn == 0) {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 1 && fin_list[i].textContent == "1") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 2 && fin_list[i].textContent == "") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }
+        }
+      }
+    }
+  }
+  
+  if (inputRegu !== "") {
+    for (var i=0; i<a_reg_list.length; i++) {
+      if ((a_reg_list[i].textContent.indexOf(inputRegu) !== -1) || (b_reg_list[i].textContent.indexOf(inputRegu) !== -1)) {
+        if (i_stock.indexOf(i) == -1) {
+          if (btn == 0) {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 1 && fin_list[i].textContent == "1") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }else if (btn == 2 && fin_list[i].textContent == "") {
+            i_stock.push(i);
+            emp_flag = 1;
+          }
+        }
+      }
+    }
+  }
+
+  if (emp_flag == 0) {
+    for (var i=0; i<sec_list.length; i++) {
+      if (btn == 0) {
+        i_stock.push(i);
+      }else if (btn == 1 && fin_list[i].textContent == "1") {
+        i_stock.push(i);
+      }else if (btn == 2 && fin_list[i].textContent == "") {
+        i_stock.push(i);
+      }
+    }
+  }
+
+  for (var i=0; i<i_stock.length; i++) {
+    sec.push(sec_list[i_stock[i]].textContent);
+    st.push(st_list[i_stock[i]].textContent);
+    court.push(court_list[i_stock[i]].textContent);
+    gm_num.push(gm_num_list[i_stock[i]].textContent);
+    gm_name.push(gm_name_list[i_stock[i]].textContent);
+    a_reg.push(a_reg_list[i_stock[i]].textContent);
+    b_reg.push(b_reg_list[i_stock[i]].textContent);
+    w_next.push(w_next_list[i_stock[i]].textContent);
+    l_next.push(l_next_list[i_stock[i]].textContent);
+    a_sets.push(a_sets_list[i_stock[i]].textContent);
+    b_sets.push(b_sets_list[i_stock[i]].textContent);
+    a_1.push(a_1_list[i_stock[i]].textContent);
+    a_2.push(a_2_list[i_stock[i]].textContent);
+    a_3.push(a_3_list[i_stock[i]].textContent);
+    b_1.push(b_1_list[i_stock[i]].textContent);
+    b_2.push(b_2_list[i_stock[i]].textContent);
+    b_3.push(b_3_list[i_stock[i]].textContent);
+    fin.push(fin_list[i_stock[i]].textContent);
+  }
+
+  document.getElementById("info").innerHTML = '';
+
+  for (var i=0; i<sec.length; i++){
+    if(fin[i] == 1){
+      var para = `<tr class="table-dark">`;
+    }
+    else{
+      var para = `<tr>`;
+    }
+    document.getElementById("info").innerHTML += 
+      para +
+        `<td scope="row" class="align-middle">` + sec[i] + ` (` + st[i] + `)</td>
+        <td class="align-middle">` + court[i] + `</td>
+        <td class="align-middle">` + gm_num[i] + ` (` + gm_name[i] + `)</td>
+        <td><ul class="list-unstyled">
+          <li>` + a_reg[i] + `/</li>
+          <li>` + b_reg[i] + `</li></ul></td>
+        <td><ul class="list-unstyled">
+          <li>`+a_sets[i]+` (`+a_1[i]+`-`+a_2[i]+`-`+a_3[i]+`)/</li>
+          <li>`+b_sets[i]+` (`+b_1[i]+`-`+b_2[i]+`-`+b_3[i]+`)</li>
+      </tr>`;
+  }
+}
+
+function searchClear() {
+  document.getElementById('TimeSelect').value = "";
+  document.getElementById('CourtSelect').value = "";
+  document.getElementById('GameSelect').value = "";
+  document.getElementById('ReguSelect').value = "";
+  searchEvent(0);
+}
+// 協賛企業のバナーのランダム表示
+const hrefArea = document.getElementById('hrefArea');
+const imageArea = document.getElementById('imageArea');
+const infos = [
+  ['https://drive.google.com/uc?export=view&id=1Z8oRXrlwRjymaG3F2d6Z1cG-ed5J3TuM&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/'],
+  ['https://drive.google.com/uc?export=view&id=1VucN5Dpn3Dz-GegkvTYCiseJB4p2UkcL&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/'],
+  ['https://drive.google.com/uc?export=view&id=1PF8PdhIb9FfjXnUqamJaK7XD3G-RXcpS&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/']];
+
+const imageNo = Math.floor(Math.random() * infos.length)
+imageArea.src = infos[imageNo][0];
+imageArea.alt = infos[imageNo][1];
+hrefArea.href = infos[imageNo][2];
+
+// 初期画面//////////////////////////////////////////
+    function displayInit() {
+    /* 日程画面の表示 */
+      $('#pageSchedule').show();
+    }
+    displayInit();
+// 終わり。初期画面//////////////////////////////////////////
+
+// 画面切り替え//////////////////////////////////////////////////////////////////////////
+  $('#backResult').on('click', function(){ // 試合結果をもう一度見るボタン
+    $(this).blur();
+    $('#pageEnd').hide(); // 終了画面を隠し、メイン画面へ
+    $('#pageMain').show();
+    $('#goToTop').show();
+    return false;
+  });
+// 終わり。エンド画面////////////////////////////////////////////////////////////////////
+
+// フッターの表示設定
+var _window = $(window),
+    _navPreliminary = $('.nav_preliminary'),
+    _footer = $('.site-footer'),
+    startPos,
+    winScrollTop;
+ 
+_window.on('scroll',function(){
+    winScrollTop = $(this).scrollTop();
+    if (winScrollTop >= startPos) {
+        _navPreliminary.addClass('hide');
+        _footer.addClass('hide');
+    } else {
+        _navPreliminary.removeClass('hide');
+        _footer.removeClass('hide');
+    }
+    startPos = winScrollTop;
+});
+ 
+_window.trigger('scroll');
+
+// 画面切り替え
+$('#nav_schedule').on('click', function(){
+  $(this).blur();
+  $('#pagePreliminary').hide();
+  $('#pageFinal').hide();
+  $('#pageSchedule').show();
+  return false;
+});
+$('#nav_preliminary').on('click', function(){
+  $(this).blur();
+  $('#pageSchedule').hide();
+  $('#pageFinal').hide();
+  $('#pagePreliminary').show();
+  return false;
+});
+$('#nav_final').on('click', function(){
+  $(this).blur();
+  $('#pageSchedule').hide();
+  $('#pagePreliminary').hide();
+  $('#pageFinal').show();
+  return false;
+});
+// 終わり。フッターの表示設定
+</script>
