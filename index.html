@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+ <meta charset="utf-8">
+ <title>セパ東北オープン</title>
+ <meta name="description" content="セパタクロー東北オープン大会 2021 in Sendai の大会データが確認できます。">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+ <?!= include('css'); ?>
+ </head>
+
+ <body>
+   <!-- import data -->
+   <ul id="sec_list" hidden><? output._ = sec_list; ?></ul>
+   <ul id="st_list" hidden><? output._ = st_list; ?></ul>
+   <ul id="court_list" hidden><? output._ = court_list; ?></ul>
+   <ul id="gm_num_list" hidden><? output._ = gm_num_list; ?></ul>
+   <ul id="gm_name_list" hidden><? output._ = gm_name_list; ?></ul>
+   <ul id="a_reg_list" hidden><? output._ = a_reg_list; ?></ul>
+   <ul id="b_reg_list" hidden><? output._ = b_reg_list; ?></ul>
+   <ul id="w_next_list" hidden><? output._ = w_next_list; ?></ul>
+   <ul id="l_next_list" hidden><? output._ = l_next_list; ?></ul>
+   <ul id="a_sets_list" hidden><? output._ = a_sets_list; ?></ul>
+   <ul id="b_sets_list" hidden><? output._ = b_sets_list; ?></ul>
+   <ul id="a_1_list" hidden><? output._ = a_1_list; ?></ul>
+   <ul id="a_2_list" hidden><? output._ = a_2_list; ?></ul>
+   <ul id="a_3_list" hidden><? output._ = a_3_list; ?></ul>
+   <ul id="b_1_list" hidden><? output._ = b_1_list; ?></ul>
+   <ul id="b_2_list" hidden><? output._ = b_2_list; ?></ul>
+   <ul id="b_3_list" hidden><? output._ = b_3_list; ?></ul>
+   <ul id="fin_list" hidden><? output._ = fin_list; ?></ul>   
+   <!-- /import data -->
+
+
+  <h5 class="card-header">セパ東北オープン大会 日程・結果</h5>
+
+ <!----- schedule----->
+ <div id="pageSchedule" class="card page">
+  <div class="card-body">
+    <form class="row gy-2 gx-3 align-items-center">
+      <div class="col-auto">
+        <select class="form-select" id="TimeSelect" type="text" onchange="searchEvent(0)">
+          <option value ="" selected>開始時間...</option>
+          <option value="9:30">9:30</option>
+          <option value="10:20">10:20</option>
+          <option value="11:10">11:10</option>
+          <option value="12:00">12:00</option>
+          <option value="12:50">12:50</option>
+          <option value="13:40">13:40</option>
+          <option value="14:30">14:30</option>
+          <option value="15:20">15:20</option>
+          <option value="16:30">16:30</option>
+          <option value="17:30">17:30</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <select class="form-select" id="CourtSelect" type="text" onchange="searchEvent(0)">
+          <option value="" selected>コート...</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+        </select>
+      </div>
+      <div class="col-auto collapse collapseSearch">
+        <input class="form-control" id="GameSelect" type="text" onchange="searchEvent(0)" placeholder="試合番号...">
+      </div>
+      <div class="col-auto collapse collapseSearch">
+        <input class="form-control" id="ReguSelect" type="text" onchange="searchEvent(0)" placeholder="レグ名...">
+      </div>
+      <div class="col-auto collapse collapseSearch">
+        <button type="button" class="btn btn-outline-danger" onclick="searchClear()">全解除</button>
+      </div>
+      <div class="col-auto collapse collapseSearch">
+        <button type="button" class="btn btn-light" onclick="searchEvent(2)">未</button>
+      </div>
+      <div class="col-auto collapse collapseSearch">
+        <button type="button" class="btn btn-secondary" onclick="searchEvent(1)">済</button>
+      </div>
+      <div class="col-auto  collapse collapseSearch">
+        <a href="https://sendai-sepak.1web.jp/" id="hrefArea"><img src="https://drive.google.com/uc?export=view&id=1Z8oRXrlwRjymaG3F2d6Z1cG-ed5J3TuM&usp=sharing" id="imageArea"></a>
+      </div>
+      <div class="col-auto">
+        <i class="fas fa-caret-down fa-2x" onclick="$('.collapseSearch').collapse('toggle')"></i>
+      </div>
+    </form>
+  </div>
+
+  <table class="table table-sm table-striped table-bordered text-center table-main">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">コート</th>
+        <th scope="col">試合番号(名)</th>
+        <th scope="col">レグ</th>
+        <th scope="col">結果</th>
+      </tr>
+    </thead>
+    <tbody class="fs-5 fw-bold" id="info">
+      
+      <? output._ = msg; ?>
+    </tbody>
+  </table>
+  <div class="blankArea"></div>
+</div>
+<!----- /schedule ----->
+
+
+<!-- preliminary -->
+ <div id="pagePreliminary" class="page">
+  <h5 class="alert alert-light" role="alert">予選グループリーグ表 (アスリート)</h5>
+
+  <div class="score_sheet">   
+    <table id="table_A">
+      <tbody>
+      <tr>
+        <td class="team_name">A</td>
+        <td class="team0">宮城E</td>
+        <td class="team0">札ク</td>
+        <td class="team0">阪神酒販3rd</td>
+        <td class="team0">宮城D</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">宮城E</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">札ク</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">阪神酒販3rd</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城D</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_B">
+      <tbody>
+      <tr>
+        <td class="team_name">B</td>
+        <td class="team0">宮城F</td>
+        <td class="team0">宮城A</td>
+        <td class="team0">大山たぬき</td>
+        <td class="team0">けまりんA</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">宮城F</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城A</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">大山たぬき</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">けまりんA</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_C">
+      <tbody>
+      <tr>
+        <td class="team_name">C</td>
+        <td class="team0">千葉A</td>
+        <td class="team0">宮城C</td>
+        <td class="team0">宮城B</td>
+        <td class="team0">バモスA</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">千葉A</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城C</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城B</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">バモスA</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <div class="blankArea"></div>   
+    <h5 class="alert alert-light" role="alert">予選グループリーグ表 (エンジョイ)</h5>
+    <table id="table_D">
+      <tbody>
+      <tr>
+        <td class="team_name">D</td>
+        <td class="team0">宮城a</td>
+        <td class="team0">大山</td>
+        <td class="team0">渋番屋</td>
+        <td class="team0">毎日コミュ</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">宮城a</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">大山</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">渋番屋</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">毎日コミュ</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_E">
+      <tbody>
+      <tr>
+        <td class="team_name">E</td>
+        <td class="team0">栗ご飯A</td>
+        <td class="team0">宮城c</td>
+        <td class="team0">下越</td>
+        <td class="team0">宮城f</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">栗ご飯A</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城c</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">下越</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城f</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_F">
+      <tbody>
+      <tr>
+        <td class="team_name">F</td>
+        <td class="team0">シン・ラポラ</td>
+        <td class="team0">サッポロ桃太郎</td>
+        <td class="team0">阪神ラポラ―ズ</td>
+        <td class="team0">宮城b</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">シン・ラポラ</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">サッポロ桃太郎</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">阪神ラポラ―ズ</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城b</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_G">
+      <tbody>
+      <tr>
+        <td class="team_name">G</td>
+        <td class="team0">千葉B</td>
+        <td class="team0">竈門"タン"治郎</td>
+        <td class="team0">ふじみ</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">千葉B</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">竈門"タン"治郎</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">ふじみ</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>  
+
+    <table id="table_H">
+      <tbody>
+      <tr>
+        <td class="team_name">H</td>
+        <td class="team0">宮城d</td>
+        <td class="team0">大山たぬずんたん</td>
+        <td class="team0">宮城e</td>
+        <td class="w_points">勝点</td>
+        <td class="d_points">得失点</td>
+      </tr>
+      <tr>
+        <td class="team">宮城d</td>
+        <td class="blank_box"></td>
+        <td class="result">0-0</td>
+        <td class="result">0-0</td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">大山たぬずんたん</td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="result"><br><br></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      <tr>
+        <td class="team">宮城e</td>
+        <td class="result"><br><br></td>
+        <td class="result"><br><br></td>
+        <td class="blank_box"></td>
+        <td class="w_points">0</td>
+        <td class="d_points">0</td>
+      </tr>
+      </tbody>
+    </table>    
+    <div class="blankArea"></div>
+
+    <div class="nav_preliminary">
+      <ul class="nav_preliminary__menu">
+        <li class="nav_preliminary__menu__item"><a href="#table_A">A</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_B">B</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_C">C</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_D">D</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_E">E</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_F">F</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_G">G</a></li>
+        <li class="nav_preliminary__menu__item"><a href="#table_H">H</a></li>
+      </ul>
+    </div>
+  </div>
+ </div>
+<!-- /preliminary -->
+
+<!-- final -->
+ <div id="pageFinal" class="page">
+   <h5 class="alert alert-light" role="alert">決勝トーナメント (アスリート)</h5>
+   <div id="tournamentAthlete">
+     <div id="athArea1">
+       <div id="athTour1A">グループA1位</div>
+       <div id="athTourHline1"></div>
+       <div id="athTourVline1"></div>
+       <div id="athTourResult1A">2<br>(21-21-21)</div>
+       <div id="athTourHline2"></div>
+     </div>
+     <div id="athArea2">
+       <div id="athTour1B">グループB1位</div>
+       <div id="athTourHline3"></div>
+       <div id="athTourVline2"></div>
+       <div id="athTourResult1B">2<br>(21-21-21)</div>
+       <div id="athTourVline3"></div>
+     </div>
+     <div id="athArea3">
+       <div id="athTourHline4"></div>
+       <div id="athTourResult3A">2<br>(21-21-21)</div>
+       <div id="athTourCrown"></div>
+       <div id="athTourTop">優勝(アスリート)</div>
+     </div>
+     <div id="athArea4">
+       <div id="athTourVline4"></div>
+       <div id="athTourResult3B">2<br>(21-21-21)</div>
+     </div>
+     <div id="athArea5">
+       <div id="athTour2A">グループC1位</div>
+       <div id="athTourHline5"></div>
+       <div id="athTourVline5"></div>
+       <div id="athTourResult2A">2<br>(21-21-21)</div>
+       <div id="athTourHline6"></div>
+     </div>
+     <div id="athArea6">
+       <div id="athTour2B">全体4位(得失点)</div>
+       <div id="athTourHline7"></div>
+       <div id="athTourVline6"></div>
+       <div id="athTourResult2B">2<br>(21-21-21)</div>
+     </div>
+   </div>
+   <div class="blankArea"></div>
+   <h5 class="alert alert-light" role="alert">決勝トーナメント (エンジョイ)</h5>
+   <div id="tournamentEnjoy">
+     <div id="enArea1">
+       <div id="enTour1A">グループD1位</div>
+       <div id="enTourHline1"></div>
+       <div id="enTourVline1"></div>
+       <div id="enTourResult1A">2<br>(21-21-21)</div>
+       <div id="enTourHline2"></div>
+     </div>
+     <div id="enArea2">
+       <div id="enTour1B">グループE1位</div>
+       <div id="enTourHline3"></div>
+       <div id="enTourVline2"></div>
+       <div id="enTourResult1B">2<br>(21-21-21)</div>
+       <div id="enTourVline3"></div>
+     </div>
+     <div id="enArea3">
+       <div id="enTourHline4"></div>
+       <div id="enTourResult3A">2<br>(21-21-21)</div>
+       <div id="enTourCrown"></div>
+       <div id="enTourTop">優勝(エンジョイ)</div>
+     </div>
+     <div id="enArea4">
+       <div id="enTourVline4"></div>
+       <div id="enTourResult3B">2<br>(21-21-21)</div>
+     </div>
+     <div id="enArea5">
+       <div id="enTour2A">グループF1位</div>
+       <div id="enTourHline5"></div>
+       <div id="enTourVline5"></div>
+       <div id="enTourResult2A">2<br>(21-21-21)</div>
+       <div id="enTourHline6"></div>
+     </div>
+     <div id="enArea6">
+       <div id="enTour2B">グループG・H1位</div>
+       <div id="enTourHline7"></div>
+       <div id="enTourVline6"></div>
+       <div id="enTourResult2B">2<br>(21-21-21)</div>
+     </div>
+   </div>
+   <div class="blankArea"></div>
+   <!-- <div class="nav_final">
+      <ul class="nav_final__menu">
+        <li class="nav_final__menu__item"><a href="#tournamentAthlete">アスリート</a></li>
+        <li class="nav_final__menu__item"><a href="#tournamentEnjoy">エンジョイ</a></li>
+      </ul>
+    </div> -->
+ </div>
+<!-- /final -->
+
+ 
+ <!----- footer ----->
+ <div class="site-footer">
+  <nav class="gnav">
+    <ul class="gnav__menu">
+      <li id="nav_schedule" class="gnav__menu__item">日程</li>
+      <li id="nav_preliminary" class="gnav__menu__item">予選</li>
+      <li id="nav_final" class="gnav__menu__item">決勝</li>
+      <li class="gnav__menu__item"><a href="https://script.google.com/macros/s/AKfycbzxZypuQMlNLmbhSdAbUgZAqpeSJEn4T2Rl4Ohs7MLibQcOMmnLg9_q-qZhlcwSut2xrA/exec" target="_blank">審判</a></li>
+    </ul>
+  </nav>
+ </div>
+ <footer>
+  <p class="copyright">Copyright &copy; <a href="https://sendai-sepak.1web.jp/" target="_blank">セパタクロー東北オープン大会 2021<a>, All Rights Reserved.</p>
+ </footer>
+ <!----- /footer ----->
+
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+ <?!= include('js'); ?>
+ <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+ </body>
+</html>
