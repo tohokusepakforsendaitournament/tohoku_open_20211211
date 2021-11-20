@@ -54,7 +54,7 @@ function checkPassword(gameNumber, gamePass) {
 }
 // 審判画面から送信された結果を元に、スプレッドシートを書き換える
 function sendToSpread(setNum, rowNumber, pointA, pointB, setA, setB) {
-  var sh = SpreadsheetApp.openById("16a_bxPKGMt_9ZZ-Q9kNrta2KGo8ruo15h9B_yo6BLx4");
+  var sh = SpreadsheetApp.openById("#####################################");
   var ss = sh.getSheets()[0];
   ss.getRange(rowNumber, 23).setValue(setA);
   ss.getRange(rowNumber, 24).setValue(setB);
@@ -63,7 +63,7 @@ function sendToSpread(setNum, rowNumber, pointA, pointB, setA, setB) {
 }
 // 試合終了後に審判画面から送信された結果を元に、スプレッドシートを書き換える
 function sendToSpreadFin(setNum, rowNumber, pointA, pointB, setA, setB, hisSet, reg) {
-  var sh = SpreadsheetApp.openById("16a_bxPKGMt_9ZZ-Q9kNrta2KGo8ruo15h9B_yo6BLx4");
+  var sh = SpreadsheetApp.openById("##################################################");
   var ss = sh.getSheets()[0];
   ss.getRange(rowNumber, 23).setValue(setA);
   ss.getRange(rowNumber, 24).setValue(setB);
