@@ -46,7 +46,6 @@ table.table-main > tbody > tr > td > ul{
   background: #fff;
   display: relative;
   justify-content: space-between;
-  padding: 15px;
   position: fixed;
   bottom: 54px;
   transition: .5s;
@@ -56,10 +55,11 @@ table.table-main > tbody > tr > td > ul{
   bottom: -78px;
 }
 .nav_preliminary__menu{
+  margin-left: 28px;
   display: flex;
 }
 .nav_preliminary__menu__item{
-  margin-left: 28px;
+  padding: 15px 14px 15px 14px;
   cursor: pointer;
 }
 .nav_preliminary__menu__item a{
@@ -81,7 +81,9 @@ div.score_sheet table tr {
 div.score_sheet table tr td {
   border: 1px solid;
 }
-.team_name {  
+.color_athlete {background-color: #FFFEC9;}
+.color_enjoy {background-color: #E6F4D4;}
+.group_name {  
   font-size: 20px; 
   font-weight: 600;
   width: 22%;
@@ -92,6 +94,7 @@ div.score_sheet table tr td {
   text-align: center;
 }
 .team {
+  height: 39px;
   text-align: center;
 }
 .result {
@@ -138,6 +141,9 @@ div.score_sheet table tr td {
   color: #333;
   text-decoration: none;
 } */
+#tournamentAthlete {padding: 30px 0 30px 0;}
+#tournamentEnjoy {padding: 30px 0 30px 0;}
+
 #athArea1,
 #athArea2,
 #athArea3,
@@ -154,7 +160,7 @@ div.score_sheet table tr td {
 #athTourTop,
 #athTour2A,
 #athTour2B{
-  width: 86px;
+  width: 22.9%;
   height: 26px;
   font-size: 12px;
   position: absolute;
@@ -163,13 +169,13 @@ div.score_sheet table tr td {
 }
 #athTour1A {top: 0; left: 0;}
 #athTour1B {bottom: 0; left: 0;}
-#athTourTop {bottom: -13px; left: 244px;}
+#athTourTop {bottom: -13px; left: 65.1%; text-align: left;}
 #athTour2A {top: 0; left: 0;}
 #athTour2B {bottom: 0; left: 0;}
 #athTourHline2,
 #athTourHline4,
 #athTourHline6{
-  width: 60px;
+  width: 16%;
   height: 12px;
   position: absolute;
   border-bottom: solid 2px #000000;
@@ -178,57 +184,57 @@ div.score_sheet table tr td {
 #athTourHline3,
 #athTourHline5,
 #athTourHline7{
-  width: 30px;
+  width: 8%;
   height: 12px;
   position: absolute;
   border-bottom: solid 2px #000000;
 }
-#athTourHline1{top: 0; left: 90px;}
-#athTourHline2{bottom: 0; left: 120px;}
-#athTourHline3{bottom: 12px; left: 90px;}
-#athTourHline4{bottom: 0; left: 180px;}
-#athTourHline5{top: 0; left: 90px;}
-#athTourHline6{bottom: 0; left: 120px;}
-#athTourHline7{bottom: 12px; left: 90px;}
+#athTourHline1{top: 0; left: 24%}
+#athTourHline2{bottom: 0; left: 32%;}
+#athTourHline3{bottom: 12px; left: 24%;}
+#athTourHline4{bottom: 0; left: 48%;}
+#athTourHline5{top: 0; left: 24%;}
+#athTourHline6{bottom: 0; left: 32%;}
+#athTourHline7{bottom: 12px; left: 24%;}
 #athTourVline1,
 #athTourVline2,
 #athTourVline5,
 #athTourVline6{
-  width: 30px;
+  width: 8%;
   height: 44px;
   position: absolute;
   border-right: solid 2px #000000;
 }
 #athTourVline3,
 #athTourVline4{
-  width: 60px;
+  width: 16%;
   height: 112px;
   position: absolute;
   border-right: solid 2px #000000;
 }
-#athTourVline1{top: 12px; left: 90px;}
-#athTourVline2{top: 0; left: 90px;}
-#athTourVline3{top: 0; left: 120px;}
-#athTourVline4{top: 0; left: 120px;}
-#athTourVline5{top: 12px; left: 90px;}
-#athTourVline6{bottom: 12px; left: 90px;}
+#athTourVline1{top: 12px; left: 24%;}
+#athTourVline2{top: 0; left: 24%;}
+#athTourVline3{top: 0; left: 32%;}
+#athTourVline4{top: 0; left: 32%;}
+#athTourVline5{top: 12px; left: 24%;}
+#athTourVline6{bottom: 12px; left: 24%;}
 #athTourResult1A,
 #athTourResult1B,
 #athTourResult3A,
 #athTourResult3B,
 #athTourResult2A,
 #athTourResult2B{
-  width: 60px;
+  width: 16%;
   height: 40px;
   position: absolute;
   font-size: 12px;
 }
-#athTourResult1A{bottom: 0; left: 122px;}
-#athTourResult1B{top: 0; left: 122px;}
-#athTourResult3A{bottom: 0; left: 182px;}
-#athTourResult3B{top: 0; left: 182px;}
-#athTourResult2A{bottom: 0; left: 122px;}
-#athTourResult2B{top: 0; left: 122px;}
+#athTourResult1A{bottom: 0; left: 32.5%;}
+#athTourResult1B{top: 0; left: 32.5%;}
+#athTourResult3A{bottom: 0; left: 48.5%;}
+#athTourResult3B{top: 0; left: 48.5%;}
+#athTourResult2A{bottom: 0; left: 32.5%;}
+#athTourResult2B{top: 0; left: 32.5%;}
 #enArea1,
 #enArea2,
 #enArea3,
@@ -245,7 +251,7 @@ div.score_sheet table tr td {
 #enTourTop,
 #enTour2A,
 #enTour2B{
-  width: 86px;
+  width: 22.9%;
   height: 26px;
   font-size: 12px;
   position: absolute;
@@ -254,13 +260,13 @@ div.score_sheet table tr td {
 }
 #enTour1A {top: 0; left: 0;}
 #enTour1B {bottom: 0; left: 0;}
-#enTourTop {bottom: -13px; left: 244px;}
+#enTourTop {bottom: -13px; left: 65.1%; text-align: left;}
 #enTour2A {top: 0; left: 0;}
 #enTour2B {bottom: 0; left: 0;}
 #enTourHline2,
 #enTourHline4,
 #enTourHline6{
-  width: 60px;
+  width: 16%;
   height: 12px;
   position: absolute;
   border-bottom: solid 2px #000000;
@@ -269,57 +275,57 @@ div.score_sheet table tr td {
 #enTourHline3,
 #enTourHline5,
 #enTourHline7{
-  width: 30px;
+  width: 8%;
   height: 12px;
   position: absolute;
   border-bottom: solid 2px #000000;
 }
-#enTourHline1{top: 0; left: 90px;}
-#enTourHline2{bottom: 0; left: 120px;}
-#enTourHline3{bottom: 12px; left: 90px;}
-#enTourHline4{bottom: 0; left: 180px;}
-#enTourHline5{top: 0; left: 90px;}
-#enTourHline6{bottom: 0; left: 120px;}
-#enTourHline7{bottom: 12px; left: 90px;}
+#enTourHline1{top: 0; left: 24%;}
+#enTourHline2{bottom: 0; left: 32%;}
+#enTourHline3{bottom: 12px; left: 24%;}
+#enTourHline4{bottom: 0; left: 48%;}
+#enTourHline5{top: 0; left: 24%;}
+#enTourHline6{bottom: 0; left: 32%;}
+#enTourHline7{bottom: 12px; left: 24%;}
 #enTourVline1,
 #enTourVline2,
 #enTourVline5,
 #enTourVline6{
-  width: 30px;
+  width: 8%;
   height: 44px;
   position: absolute;
   border-right: solid 2px #000000;
 }
 #enTourVline3,
 #enTourVline4{
-  width: 60px;
+  width: 16%;
   height: 112px;
   position: absolute;
   border-right: solid 2px #000000;
 }
-#enTourVline1{top: 12px; left: 90px;}
-#enTourVline2{top: 0; left: 90px;}
-#enTourVline3{top: 0; left: 120px;}
-#enTourVline4{top: 0; left: 120px;}
-#enTourVline5{top: 12px; left: 90px;}
-#enTourVline6{bottom: 12px; left: 90px;}
+#enTourVline1{top: 12px; left: 24%;}
+#enTourVline2{top: 0; left: 24%;}
+#enTourVline3{top: 0; left: 32%;}
+#enTourVline4{top: 0; left: 32%;}
+#enTourVline5{top: 12px; left: 24%;}
+#enTourVline6{bottom: 12px; left: 24%;}
 #enTourResult1A,
 #enTourResult1B,
 #enTourResult3A,
 #enTourResult3B,
 #enTourResult2A,
 #enTourResult2B{
-  width: 60px;
+  width: 16%;
   height: 40px;
   position: absolute;
   font-size: 12px;
 }
-#enTourResult1A{bottom: 0; left: 122px;}
-#enTourResult1B{top: 0; left: 122px;}
-#enTourResult3A{bottom: 0; left: 182px;}
-#enTourResult3B{top: 0; left: 182px;}
-#enTourResult2A{bottom: 0; left: 122px;}
-#enTourResult2B{top: 0; left: 122px;}
+#enTourResult1A{bottom: 0; left: 32.5%;}
+#enTourResult1B{top: 0; left: 32.5%;}
+#enTourResult3A{bottom: 0; left: 48.5%;}
+#enTourResult3B{top: 0; left: 48.5%;}
+#enTourResult2A{bottom: 0; left: 32.5%;}
+#enTourResult2B{top: 0; left: 32.5%;}
 
 .site-footer{
   background: #fff;
@@ -344,6 +350,10 @@ div.score_sheet table tr td {
 .gnav__menu__item a{
   color: #333;
   text-decoration: none;
+}
+.bannerAds {
+  margin-top: 70px;
+  text-align: center;
 }
 .copyright {
   text-align: center;
