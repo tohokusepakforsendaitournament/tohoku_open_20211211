@@ -1,8 +1,8 @@
 # セパタクロー東北オープン大会 2021/12/11 用に作成中
 
 ## デプロイしたウェブサイト
-1. 大会日程・結果表示サイト(https://script.google.com/macros/s/AKfycbzVzCYBP34a5ayh0maBwG_y-0CzWKPgxQivXglwhobfeYb6wI81REtx4dlU9iv6xMoW/exec)
-2. 審判用ツールサイト(https://script.google.com/macros/s/AKfycbwGBOoj2D6ebVoAwUQ7UpCFkn36bla6Fr1i55IUq1mHd51_gxL43qPXDY1PE59xbKuDiA/exec)
+1. 大会日程・結果表示サイト(https://script.google.com/macros/s/AKfycbyWBrUSG_1rBnRFvNk_U4rb7dUdMXCMS-ks6beOyQQ1c_ubR13U2HLLwDGUD-7Q62sT/exec)
+2. 審判用ツールサイト(https://script.google.com/macros/s/AKfycby8PPagMkI0HMQeHA6VZx3L2AjH9nh1hLs_eBoLXbybofYJalp4BA9vShSi_nAFnVoUEw/exec)
 
 ## 作成の目的・背景
 1. スポーツ大会の選手がスマホで大会スケジュールを確認出来るようにし、移動の負担を減らしたい
