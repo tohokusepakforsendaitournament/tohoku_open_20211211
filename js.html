@@ -27,24 +27,25 @@ function searchEvent(btn) {
   var emp_flag = 0;
   
   // index.html のhidden list から値を全て取ってくる
-  const sec_list = document.getElementById("sec_list").getElementsByTagName("li");
-  const st_list = document.getElementById("st_list").getElementsByTagName("li");
-  const court_list = document.getElementById("court_list").getElementsByTagName("li");
-  const gm_num_list = document.getElementById("gm_num_list").getElementsByTagName("li");
-  const gm_name_list = document.getElementById("gm_name_list").getElementsByTagName("li");
-  const a_reg_list = document.getElementById("a_reg_list").getElementsByTagName("li");
-  const b_reg_list = document.getElementById("b_reg_list").getElementsByTagName("li");
-  const w_next_list = document.getElementById("w_next_list").getElementsByTagName("li");
-  const l_next_list = document.getElementById("l_next_list").getElementsByTagName("li");
-  const a_sets_list = document.getElementById("a_sets_list").getElementsByTagName("li");
-  const b_sets_list = document.getElementById("b_sets_list").getElementsByTagName("li");
-  const a_1_list = document.getElementById("a_1_list").getElementsByTagName("li");
-  const a_2_list = document.getElementById("a_2_list").getElementsByTagName("li");
-  const a_3_list = document.getElementById("a_3_list").getElementsByTagName("li");
-  const b_1_list = document.getElementById("b_1_list").getElementsByTagName("li");
-  const b_2_list = document.getElementById("b_2_list").getElementsByTagName("li");
-  const b_3_list = document.getElementById("b_3_list").getElementsByTagName("li");
-  const fin_list = document.getElementById("fin_list").getElementsByTagName("li");
+  const info_list = document.getElementById("info_list").getElementsByTagName("ul");
+  const sec_list = info_list[0].getElementsByTagName("li");
+  const st_list = info_list[1].getElementsByTagName("li");
+  const court_list = info_list[2].getElementsByTagName("li");
+  const gm_num_list = info_list[3].getElementsByTagName("li");
+  const gm_name_list = info_list[4].getElementsByTagName("li");
+  const a_reg_list = info_list[5].getElementsByTagName("li");
+  const b_reg_list = info_list[6].getElementsByTagName("li");
+  const w_next_list = info_list[17].getElementsByTagName("li");
+  const l_next_list = info_list[18].getElementsByTagName("li");
+  const a_sets_list = info_list[21].getElementsByTagName("li");
+  const b_sets_list = info_list[22].getElementsByTagName("li");
+  const a_1_list = info_list[23].getElementsByTagName("li");
+  const a_2_list = info_list[24].getElementsByTagName("li");
+  const a_3_list = info_list[25].getElementsByTagName("li");
+  const b_1_list = info_list[26].getElementsByTagName("li");
+  const b_2_list = info_list[27].getElementsByTagName("li");
+  const b_3_list = info_list[28].getElementsByTagName("li");
+  const fin_list = info_list[31].getElementsByTagName("li");
   
   // 検索窓に入力された文字を取得する
   const inputSt = document.getElementById("TimeSelect").value;
@@ -196,21 +197,27 @@ function searchClear() {
 const hrefArea = document.getElementById('hrefArea');
 const imageArea = document.getElementById('imageArea');
 const infos = [
-  ['https://drive.google.com/uc?export=view&id=1Z8oRXrlwRjymaG3F2d6Z1cG-ed5J3TuM&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/'],
-  ['https://drive.google.com/uc?export=view&id=1VucN5Dpn3Dz-GegkvTYCiseJB4p2UkcL&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/'],
-  ['https://drive.google.com/uc?export=view&id=1PF8PdhIb9FfjXnUqamJaK7XD3G-RXcpS&usp=sharing', '広告募集中！', 'https://sendai-sepak.1web.jp/']];
-
+  ['https://drive.google.com/uc?export=view&id=1gHjl8ThJXA6ztoE48rctHo_nNgN0CJVw&usp=sharing', 'B.V.D.', 'https://store.fujibo-ap.jp/s/pa/'],];
 const imageNo = Math.floor(Math.random() * infos.length)
 imageArea.src = infos[imageNo][0];
 imageArea.alt = infos[imageNo][1];
 hrefArea.href = infos[imageNo][2];
 
+// 広告のカウント
+function clickAds() {
+  google.script.run.withSuccessHandler(meaningless).withFailureHandler(meaningless).clickAds();
+
+  function meaningless() {
+    const meaning = ""
+  }
+}
+
 // 初期画面//////////////////////////////////////////
-    function displayInit() {
-    /* 日程画面の表示 */
-      $('#pageSchedule').show();
-    }
-    displayInit();
+function displayInit() {
+/* 日程画面の表示 */
+  $('#pageSchedule').show();
+}
+displayInit();
 // 終わり。初期画面//////////////////////////////////////////
 
 // 画面切り替え//////////////////////////////////////////////////////////////////////////
