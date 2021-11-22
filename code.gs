@@ -1,51 +1,38 @@
+//https://qiita.com/kakkiichan/items/6eeff6e67a86e9f81aaa
+//https://script.google.com/home/projects/1aL1bvAkWEiz3mA0ClDcQSMhrFuwIJLmdDDASsz6LECBBJ0XmZuAjVyR3/edit
+
 function doGet(req) {
 
   // スプレッドシートから情報取得
-  var sh = SpreadsheetApp.openById("####################################");
-  var ss = sh.getSheets()[0];
-  var last_row = ss.getLastRow();
+  const sh = SpreadsheetApp.openById("############################################");
+  const ss = sh.getSheets()[0];
+  const ss3 = sh.getSheets()[2];
+  const last_row = ss.getLastRow();
   var msg = "";
 
-  var sec_list = "";
-  var st_list = "";
-  var court_list = "";
-  var gm_name_list = "";
-  var gm_num_list = "";
-  var a_reg_list = "";
-  var b_reg_list = "";
-  var w_next_list = "";
-  var l_next_list = "";
-  var a_sets_list = "";
-  var b_sets_list = "";
-  var a_1_list = "";
-  var a_2_list = "";
-  var a_3_list = "";
-  var b_1_list = "";
-  var b_2_list = "";
-  var b_3_list = "";
-  var fin_list = "";
-
-  for(var i=2; i<=last_row; i++) {
-    var infoArray = ss.getRange(i, 2, 1, 32).getValues();
-    var sec = infoArray[0][0]; // セクション
-    var st = infoArray[0][1]; // 開始時間
-    var court = infoArray[0][2]; // コート
-    var gm_num = infoArray[0][3]; // 試合番号
-    var gm_name = infoArray[0][4]; // 試合名
-    var a_reg = infoArray[0][5]; // レグA
-    var b_reg = infoArray[0][6]; // レグB
-    var w_next = infoArray[0][17]; // 勝者次試合番号
-    var l_next = infoArray[0][18]; // 敗者次試合番号
-    var a_sets = infoArray[0][21]; // A獲得セット
-    var b_sets = infoArray[0][22]; // B獲得セット
-    var a_1 = infoArray[0][23]; // A1セット
-    var a_2 = infoArray[0][24]; // A2セット
-    var a_3 = infoArray[0][25]; // A3セット
-    var b_1 = infoArray[0][26]; // B1セット
-    var b_2 = infoArray[0][27]; // B2セット
-    var b_3 = infoArray[0][28]; // B3セット
-    var fin = infoArray[0][31]; // 終了フラグ
-    if(fin == 1){
+  let info_list= new Array(32).fill("<ul>"); //要素数32の配列(array)を作成
+  // 取得した情報をindex.htmlでhiddenのリストとして出力する。検索高速化の為
+  var infoArray = ss.getRange(2, 2, last_row-1, 32).getValues(); 
+  for(let i=0; i<last_row-1; i++) {   
+    const sec = 0; // セクション
+    const st = 1; // 開始時間
+    const court = 2; // コート
+    const gm_num = 3; // 試合番号
+    const gm_name = 4; // 試合名
+    const a_reg = 5; // レグA
+    const b_reg = 6; // レグB
+    const w_next = 17; // 勝者次試合番号
+    const l_next = 18; // 敗者次試合番号
+    const a_sets = 21; // A獲得セット
+    const b_sets = 22; // B獲得セット
+    const a_1 = 23; // A1セット
+    const a_2 = 24; // A2セット
+    const a_3 = 25; // A3セット
+    const b_1 = 26; // B1セット
+    const b_2 = 27; // B2セット
+    const b_3 = 28; // B3セット
+    const fin = 31; // 終了フラグ
+    if(infoArray[0][fin] == 1){
       var para = `<tr class="table-dark">`;
     }
     else{
@@ -54,58 +41,230 @@ function doGet(req) {
 
     msg +=
       para +
-        `<td scope="row" class="align-middle">` + sec + ` (` + st + `)</td>
-        <td class="align-middle">` + court + `</td>
-        <td class="align-middle">` + gm_num + ` (` + gm_name + `)</td>
+        `<td scope="row" class="align-middle">` + infoArray[i][sec] + ` (` + infoArray[i][st] + `)</td>
+        <td class="align-middle">` + infoArray[i][court] + `</td>
+        <td class="align-middle">` + infoArray[i][gm_num] + ` (` + infoArray[i][gm_name] + `)</td>
         <td><ul class="list-unstyled">
-          <li>` + a_reg + `/</li>
-          <li>` + b_reg + `</li></ul></td>
+          <li>` + infoArray[i][a_reg] + `/</li>
+          <li>` + infoArray[i][b_reg] + `</li></ul></td>
         <td><ul class="list-unstyled">
-          <li>`+a_sets+` (`+a_1+`-`+a_2+`-`+a_3+`)/</li>
-          <li>`+b_sets+` (`+b_1+`-`+b_2+`-`+b_3+`)</li>
+          <li>`+infoArray[i][a_sets]+` (`+infoArray[i][a_1]+`-`+infoArray[i][a_2]+`-`+infoArray[i][a_3]+`)/</li>
+          <li>`+infoArray[i][b_sets]+` (`+infoArray[i][b_1]+`-`+infoArray[i][b_2]+`-`+infoArray[i][b_3]+`)</li>
       </tr>`;
 
-    sec_list += "<li>" + sec + "</li>";
-    st_list += "<li>" + st + "</li>";
-    court_list += "<li>" + court + "</li>";
-    gm_num_list += "<li>" + gm_num + "</li>";
-    gm_name_list += "<li>" + gm_name + "</li>";
-    a_reg_list += "<li>" + a_reg + "</li>";
-    b_reg_list += "<li>" + b_reg + "</li>";
-    w_next_list += "<li>" + w_next + "</li>";
-    l_next_list += "<li>" + l_next + "</li>";
-    a_sets_list += "<li>" + a_sets + "</li>";
-    b_sets_list += "<li>" + b_sets + "</li>";
-    a_1_list += "<li>" + a_1 + "</li>";
-    a_2_list += "<li>" + a_2 + "</li>";
-    a_3_list += "<li>" + a_3 + "</li>";
-    b_1_list += "<li>" + b_1 + "</li>";
-    b_2_list += "<li>" + b_2 + "</li>";
-    b_3_list += "<li>" + b_3 + "</li>";
-    fin_list += "<li>" + fin + "</li>";
+    info_list[sec] += "<li>" + infoArray[i][sec] + "</li>";
+    info_list[st] += "<li>" + infoArray[i][st] + "</li>";
+    info_list[court] += "<li>" + infoArray[i][court] + "</li>";
+    info_list[gm_num] += "<li>" + infoArray[i][gm_num] + "</li>";
+    info_list[gm_name] += "<li>" + infoArray[i][gm_name] + "</li>";
+    info_list[a_reg] += "<li>" + infoArray[i][a_reg] + "</li>";
+    info_list[b_reg] += "<li>" + infoArray[i][b_reg] + "</li>";
+    info_list[w_next] += "<li>" + infoArray[i][w_next] + "</li>";
+    info_list[l_next] += "<li>" + infoArray[i][l_next] + "</li>";
+    info_list[a_sets] += "<li>" + infoArray[i][a_sets] + "</li>";
+    info_list[b_sets] += "<li>" + infoArray[i][b_sets] + "</li>";
+    info_list[a_1] += "<li>" + infoArray[i][a_1] + "</li>";
+    info_list[a_2] += "<li>" + infoArray[i][a_2] + "</li>";
+    info_list[a_3] += "<li>" + infoArray[i][a_3] + "</li>";
+    info_list[b_1] += "<li>" + infoArray[i][b_1] + "</li>";
+    info_list[b_2] += "<li>" + infoArray[i][b_2] + "</li>";
+    info_list[b_3] += "<li>" + infoArray[i][b_3] + "</li>";
+    info_list[fin] += "<li>" + infoArray[i][fin] + "</li>";
 
   }
+  for(let y = 0; y < 32; y++) {
+    info_list[y] += "</ul>"; //</ul>でフタ
+  }
 
+  // 予選リーグの勝ち点や得失点を表示するために情報取得及び情報出力する
+  var league_info = ss3.getRange(2, 7, 30, 3).getValues(); 
+  const transpose = a => a[0].map((_, c) => a.map(r => r[c])); // 転置
+  league_info = transpose(league_info);
+  infoArray = transpose(infoArray);
+  // 試合の点数を取得する為の関数
+  function getGameP(infoArray, game_number) {
+    let idx = infoArray[3].indexOf(String(game_number));
+    return [infoArray[21][idx], infoArray[22][idx]];
+  }
+  // 勝ち点等を取得する為の関数
+  function getHaveP(league_info, reg_number) {
+    let idx = league_info[0].indexOf(reg_number);
+    return [league_info[1][idx], league_info[2][idx]];
+  }
+  // アスリートの予選リーグ表
+  var score_sheet_athlete = "";
+  var leagueAth = [
+    ["table_A", "A", "宮城E", "札ク", "阪神酒販3rd", "宮城D", 23, 43, 61, 63, 45, 14, 1, 2, 3, 4],
+    ["table_B", "B", "宮城F", "宮城A", "大山たぬき", "けまりんA", 12, 41, 72, 74, 52, 25, 5, 6, 7, 8],
+    ["table_B", "C", "千葉A", "宮城C", "宮城B", "バモスA", 34, 15, 76, 71, 54, 32, 9, 10, 11, 12],
+  ]
+  for (let i = 0; i < 3; i++) {
+    score_sheet_athlete += `
+    <table id="`+ leagueAth[i][0] +`">
+      <tbody>
+      <tr>
+        <td class="group_name color_athlete">`+ leagueAth[i][1] +`</td>
+        <td class="team0 color_athlete">`+ leagueAth[i][2] +`</td>
+        <td class="team0 color_athlete">`+ leagueAth[i][3] +`</td>
+        <td class="team0 color_athlete">`+ leagueAth[i][4] +`</td>
+        <td class="team0 color_athlete">`+ leagueAth[i][5] +`</td>
+        <td class="w_points color_athlete">勝点</td>
+        <td class="d_points color_athlete">得失点</td>
+      </tr>
+      <tr>
+        <td class="team color_athlete">`+ leagueAth[i][2] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][6])[0] +` - `+ getGameP(infoArray, leagueAth[i][6])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][7])[0] +` - `+ getGameP(infoArray, leagueAth[i][7])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][8])[0] +` - `+ getGameP(infoArray, leagueAth[i][8])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueAth[i][12])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueAth[i][12])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_athlete">`+ leagueAth[i][3] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][6])[1] +` - `+ getGameP(infoArray, leagueAth[i][6])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][9])[0] +` - `+ getGameP(infoArray, leagueAth[i][9])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][10])[0] +` - `+ getGameP(infoArray, leagueAth[i][10])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueAth[i][13])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueAth[i][13])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_athlete">`+ leagueAth[i][4] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][7])[1] +` - `+ getGameP(infoArray, leagueAth[i][7])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][9])[1] +` - `+ getGameP(infoArray, leagueAth[i][9])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][11])[0] +` - `+ getGameP(infoArray, leagueAth[i][11])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueAth[i][14])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueAth[i][14])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_athlete">`+ leagueAth[i][5] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][8])[1] +` - `+ getGameP(infoArray, leagueAth[i][8])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][10])[1] +` - `+ getGameP(infoArray, leagueAth[i][10])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueAth[i][11])[1] +` - `+ getGameP(infoArray, leagueAth[i][11])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="w_points">`+ getHaveP(league_info, leagueAth[i][15])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueAth[i][15])[1] +`</td>
+      </tr>
+      </tbody>
+    </table>`
+  }
+
+  // エンジョイ（４レグ）の予選リーグ表
+  var score_sheet_enjoy1 = "";
+  var leagueEn1 = [
+    ["table_D", "D", "宮城a", "大山", "渋番屋", "毎コミ", 13, 31, 55, 64, 35, 11, 13, 14, 15, 16],
+    ["table_E", "E", "栗ご飯A", "宮城c", "下越セパ", "宮城f", 21, 44, 65, 66, 46, 22, 17, 18, 19, 20],
+    ["table_F", "F", "シン・ラポラ", "サッポロ桃太郎", "阪神ラポラ―ズ", "宮城b", 22, 51, 73, 75, 53, 33, 21, 22, 23, 24],
+  ]
+  for (let i = 0; i < 3; i++) {
+    score_sheet_enjoy1 += `
+    <table id="`+ leagueEn1[i][0] +`">
+      <tbody>
+      <tr>
+        <td class="group_name color_enjoy">`+ leagueEn1[i][1] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn1[i][2] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn1[i][3] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn1[i][4] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn1[i][5] +`</td>
+        <td class="w_points color_enjoy">勝点</td>
+        <td class="d_points color_enjoy">得失点</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn1[i][2] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][6])[0] +` - `+ getGameP(infoArray, leagueEn1[i][6])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][7])[0] +` - `+ getGameP(infoArray, leagueEn1[i][7])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][8])[0] +` - `+ getGameP(infoArray, leagueEn1[i][8])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn1[i][12])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn1[i][12])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn1[i][3] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][6])[1] +` - `+ getGameP(infoArray, leagueEn1[i][6])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][9])[0] +` - `+ getGameP(infoArray, leagueEn1[i][9])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][10])[0] +` - `+ getGameP(infoArray, leagueEn1[i][10])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn1[i][13])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn1[i][13])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn1[i][4] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][7])[1] +` - `+ getGameP(infoArray, leagueEn1[i][7])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][9])[1] +` - `+ getGameP(infoArray, leagueEn1[i][9])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][11])[0] +` - `+ getGameP(infoArray, leagueEn1[i][11])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn1[i][14])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn1[i][14])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn1[i][5] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][8])[1] +` - `+ getGameP(infoArray, leagueEn1[i][8])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][10])[1] +` - `+ getGameP(infoArray, leagueEn1[i][10])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn1[i][11])[1] +` - `+ getGameP(infoArray, leagueEn1[i][11])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn1[i][15])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn1[i][15])[1] +`</td>
+      </tr>
+      </tbody>
+    </table>`
+  }
+  
+  // エンジョイ（３レグ）の予選リーグ表
+  var score_sheet_enjoy2 = "";
+  var leagueEn2 = [
+    ["table_G", "G", "千葉B", "竈門\"タン\"治郎", "ふじみ", 24, 42, 62, 25, 26, 27],
+    ["table_H", "H", "宮城d", "大山たぬずんたん", "宮城e", 16, 36, 56, 28, 29, 30],
+  ]
+  for (let i = 0; i < 2; i++) {
+    score_sheet_enjoy2 += `
+    <table id="`+ leagueEn2[i][0] +`">
+      <tbody>
+      <tr>
+        <td class="group_name color_enjoy">`+ leagueEn2[i][1] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn2[i][2] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn2[i][3] +`</td>
+        <td class="team0 color_enjoy">`+ leagueEn2[i][4] +`</td>
+        <td class="w_points color_enjoy">勝点</td>
+        <td class="d_points color_enjoy">得失点</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn2[i][2] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][5])[0] +` - `+ getGameP(infoArray, leagueEn2[i][5])[1] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][6])[0] +` - `+ getGameP(infoArray, leagueEn2[i][6])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn2[i][8])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn2[i][8])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn2[i][3] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][5])[1] +` - `+ getGameP(infoArray, leagueEn2[i][5])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][7])[0] +` - `+ getGameP(infoArray, leagueEn2[i][7])[1] +`</td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn2[i][9])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn2[i][9])[1] +`</td>
+      </tr>
+      <tr>
+        <td class="team color_enjoy">`+ leagueEn2[i][4] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][6])[1] +` - `+ getGameP(infoArray, leagueEn2[i][6])[0] +`</td>
+        <td class="result">`+ getGameP(infoArray, leagueEn2[i][7])[1] +` - `+ getGameP(infoArray, leagueEn2[i][7])[0] +`</td>
+        <td class="blank_box"></td>
+        <td class="w_points">`+ getHaveP(league_info, leagueEn2[i][10])[0] +`</td>
+        <td class="d_points">`+ getHaveP(league_info, leagueEn2[i][10])[1] +`</td>
+      </tr>
+      </tbody>
+    </table>`
+  }
+
+  // gsファイルからhtmlへ情報を出力する
   var html = HtmlService.createTemplateFromFile("index");
   html.msg = msg;
-  html.sec_list = sec_list;
-  html.st_list = st_list;
-  html.court_list = court_list;
-  html.gm_num_list = gm_num_list;
-  html.gm_name_list = gm_name_list;
-  html.a_reg_list = a_reg_list;
-  html.b_reg_list = b_reg_list;
-  html.w_next_list = w_next_list;
-  html.l_next_list = l_next_list;
-  html.a_sets_list = a_sets_list;
-  html.b_sets_list = b_sets_list;
-  html.a_1_list = a_1_list;
-  html.a_2_list = a_2_list;
-  html.a_3_list = a_3_list;
-  html.b_1_list = b_1_list;
-  html.b_2_list = b_2_list;
-  html.b_3_list = b_3_list;
-  html.fin_list = fin_list;
+  html.info_list = info_list
+  html.score_sheet_athlete = score_sheet_athlete
+  html.score_sheet_enjoy1 = score_sheet_enjoy1
+  html.score_sheet_enjoy2 = score_sheet_enjoy2
+  
   const htmlOutput = html.evaluate();
   htmlOutput
     .setTitle('大会日程・結果')
@@ -116,5 +275,14 @@ function doGet(req) {
 // CSSを読み込む関数
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// 広告が押される度にカウントする
+function clickAds() {
+  const sh = SpreadsheetApp.openById("############################################");
+  const ss2 = sh.getSheets()[1];
+  var count = ss2.getRange(1, 7).getValue();
+  count += 1;
+  ss2.getRange(1, 7).setValue(count);
 }
 
